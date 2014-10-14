@@ -1,0 +1,38 @@
+
+{% block content %}
+{% if printer_list %}
+<table class="table">
+    <thead>
+      <tr>
+        <th>Printer</th>
+        <th>Status</th>
+        <th>Legg til</th>
+    </tr>
+</thead>
+
+<tbody>
+<form action="/printers/update/" method="post">
+    {% csrf_token %}
+    {% for printer in printer_list %}
+    <tr>
+        <td>{{printer.name}}</td>
+        <td><span class="label label-success">{{<printer class="paper"></printer>}}</span></td>
+        <td>
+            <div class="printer-{{printer.name}}">
+                <input id="{{printer.name}}" type="text" name="{{printer.name}}" autocomplete="off" class="form-control" value="0">
+            </div>
+        </td>
+    </tr>
+    {% endfor %}
+
+     <tr><td></td><td></td><td><input type="submit" class="btn btn-default" value="Send"></td></tr>
+    </form>
+</tbody>
+</table>
+
+{% else %}
+<p>Det finnes ingen printere.</p>
+{% endif %}
+{% endblock %}
+
+

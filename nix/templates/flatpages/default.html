@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+{% if user.is_authenticated %}
+    {{ flatpage.content }}
+{% else %}
+    Vennligst <a href="/admin">Logg inn</a> for å se denne siden.
+{% endif %}
+
+{% endblock %}
