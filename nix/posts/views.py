@@ -1,12 +1,11 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
-from posts.models import Post
+from posts.models import Post, Category
 from django.template import RequestContext, loader
-from printers.models import Printer, Log
+from printers.models import Printer
 from posts.forms import PostForm
 import datetime
-from posts.models import Category
 
 
 @login_required(login_url='/admin/')
@@ -34,7 +33,7 @@ def post(request):
             post_content = request.POST['content']
             post_user = request.user
             now = datetime.datetime.now()
-            cat = Category.objects.get(category_description='Printer')
+            cat = Category.objects.get(category_description='Info')
             # process the data in form.cleaned_data as required
 
             post = Post(

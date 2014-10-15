@@ -1,8 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, redirect
 from django.template import RequestContext, loader
-from printers.models import Printer,Log
+from printers.models import Printer
 import datetime
 
 @login_required(login_url='/admin/')
@@ -22,32 +21,19 @@ def get_printers(request):
 
 def update(request):
     if request.method == 'POST':
-            current_printers = Printer.objects
-            current_logs = Log.objects.order_by('-time')[:len(current_printers)]
-            updated_statuses = []
+            current_printers = Printer.objects.all()
 
             for current_printer in current_printers:
-                updated_statuses.add(request.POST[current_printer.name])
+                if float(request.POST[current_printer.name]) > 0:
+                    current_printer.paper_text = request.POST[current_printer.name]
+                    current_printer.paper_remaining = float(request.POST[current_printer.name]) * 2500
+                    current_printer.save()
 
-            post_content = request.POST['content']
-            post_user = request.user
-            now = datetime.datetime.now()
-            cat = Category.objects.get(category_description='Printer')
-            # process the data in form.cleaned_data as required
-
-            post = Post(
-                user = post_user,
-                content = post_content,
-                published = now,
-                category = cat,
-            )
-            post.save()
 
             # redirect to a new URL:
             return HttpResponseRedirect('/')
 
     # if a GET (or any other method) we'll create a blank form
     else:
-        form = PostForm()
 
-    return HttpResponseRedirect('/')
+        return HttpResponseRedirect('/')
