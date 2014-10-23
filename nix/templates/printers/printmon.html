@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+{% if printer_list %}
+<h1>Printmon</h1>
+<br>
+<div class="col-md-8">
+<table class="table">
+    <thead>
+      <tr>
+        <th>Printer</th>
+        <th>Status</th>
+        <th>Papirbeholdning</th>
+    </tr>
+</thead>
+
+<tbody>
+    {% for printer in printer_list %}
+    <tr>
+        <td>{{printer.name}}</td>
+        <td><div id="status.{{printer.name}}">{{printer.status}}</div></td>
+        <td>{{printer.paper_text}}</td>
+    </tr>
+    {% endfor %}
+
+     <tr><td></td><td></td><td></td></tr>
+    </form>
+</tbody>
+</table>
+</div>
+        {% endif %}
+{% endblock %}
