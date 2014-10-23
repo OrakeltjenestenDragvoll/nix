@@ -5,8 +5,8 @@
     <thead>
       <tr>
         <th>Printer</th>
-        <th>Status</th>
-        <th>Legg til</th>
+        <th>Papir</th>
+        <th>Oppdater</th>
     </tr>
 </thead>
 
@@ -16,13 +16,21 @@
     {% for printer in printer_list %}
     <tr>
         <td>{{printer.name}}</td>
-        <td><span class="label label-success">{{printer.paper_text}}</span></td>
+        <td><b><div id="paper.{{printer.name}}">{{printer.paper_text}}</div></b></td>
         <td>
             <div class="printer-{{printer.name}}">
                 <input id="{{printer.name}}" type="text" name="{{printer.name}}" autocomplete="off" class="form-control" value="0">
             </div>
         </td>
     </tr>
+    <script>
+        if({{printer.paper_text}} >= {{printer.full_threshold}})
+            document.getElementById("paper.{{printer.name}}").style.color = "#009933";
+        if({{printer.paper_text}} < {{printer.full_threshold}})
+            document.getElementById("paper.{{printer.name}}").style.color = "#FF9900";
+        if({{printer.paper_text}} <= {{printer.low_threshold}})
+            document.getElementById("paper.{{printer.name}}").style.color = "#ff0000";
+    </script>
     {% endfor %}
 
      <tr><td></td><td></td><td><input type="submit" class="btn btn-default" value="Send"></td></tr>
