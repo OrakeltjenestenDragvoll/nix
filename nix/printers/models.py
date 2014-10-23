@@ -10,6 +10,7 @@ class Printer(models.Model):
     low_threshold = models.BigIntegerField()
     medium_threshold = models.BigIntegerField()
     full_threshold = models.BigIntegerField()
+    status = models.TextField()
 
     def __unicode__(self):
         return self.name

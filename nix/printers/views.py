@@ -37,3 +37,13 @@ def update(request):
     else:
 
         return HttpResponseRedirect('/')
+
+
+def printmon(request):
+    printer_list = Printer.objects.order_by('-name')
+    template = loader.get_template('printers/printmon.html')
+    context = RequestContext(request, {
+        'printer_list': printer_list,
+    })
+    #return HttpResponse(template.render(context))
+    return HttpResponse(template.render(context))
