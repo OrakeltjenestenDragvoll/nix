@@ -12,10 +12,13 @@ import datetime
 def index(request):
     latest_post_list = Post.objects.order_by('-published')[:5]
     printer_list = Printer.objects.order_by('-name')
+    categories = Category.objects.all()
     template = loader.get_template('posts/index.html')
     context = RequestContext(request, {
         'latest_post_list': latest_post_list,
         'printer_list': printer_list,
+        'categories': categories,
+
     })
     return HttpResponse(template.render(context))
 
@@ -23,6 +26,7 @@ def index(request):
 def detail(request, post_id):
     return HttpResponse("You're looking at post %s." % post_id)
 
+@login_required(login_url='/admin/')
 def post(request):
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
@@ -30,17 +34,20 @@ def post(request):
         form = PostForm(request.POST)
         # check whether it's valid:
         if form.is_valid():
-            post_content = request.POST['content']
+            post_content = form.cleaned_data['content']
+            post_category_text = form.cleaned_data['category']
+            post_category = Category.objects.get(category_description=post_category_text)
             post_user = request.user
             now = datetime.datetime.now()
-            cat = Category.objects.get(category_description='Info')
+            if not post_category:
+                post_category = Category.objects.get(category_description='Info')
             # process the data in form.cleaned_data as required
 
             post = Post(
                 user = post_user,
                 content = post_content,
                 published = now,
-                category = cat,
+                category = post_category,
             )
             post.save()
 
