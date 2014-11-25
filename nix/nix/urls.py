@@ -3,9 +3,7 @@ from django.contrib import admin
 from posts import views
 
 urlpatterns = patterns('',
-    # Examples:
     # url(r'^$', 'nix.views.home', name='home'),
-    # url(r'^blog/', include('blog.urls')),
     url(r'^$', include('posts.urls')),
     url(r'^post/', views.post, name='post'),
     url(r'^printers/', include('printers.urls')),

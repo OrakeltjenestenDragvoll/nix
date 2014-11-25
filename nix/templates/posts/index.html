@@ -7,13 +7,13 @@
   {% csrf_token %}
   {{ form }}
   <input type="text" autocomplete="off" class="form-control" name="content" >
-  Kategori: 
-  {% if categories %}
+    Kategori: 
+    {% if categories %}
     {% for category in categories %}
-      <input type="radio" name="category" value="{{category.category_description}}"> {{category.category_description}}
-    {% endfor %}
+   <input type="radio" name="category" value="{{category.category_description}}"> {{category.category_description}}
+   {% endfor %}
    {% endif %}
-  <input type="submit" class="btn btn-default" value="Post" />
+<input type="submit" class="btn btn-default" value="Post" />
 </form>
 <hr>
 

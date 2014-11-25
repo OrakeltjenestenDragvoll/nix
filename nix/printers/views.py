@@ -14,15 +14,15 @@ def index(request):
     #return HttpResponse(template.render(context))
     return HttpResponseRedirect('/')
 
+
 def get_printers(request):
 
     return HttpResponseRedirect('/')
 
-
+@login_required(login_url='/admin/')
 def update(request):
     if request.method == 'POST':
             current_printers = Printer.objects.all()
-
             for current_printer in current_printers:
                 if float(request.POST[current_printer.name]) > 0:
                     current_printer.paper_text = request.POST[current_printer.name]
@@ -45,5 +45,4 @@ def printmon(request):
     context = RequestContext(request, {
         'printer_list': printer_list,
     })
-    #return HttpResponse(template.render(context))
     return HttpResponse(template.render(context))

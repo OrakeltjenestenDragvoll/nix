@@ -6,7 +6,7 @@ from django.template import RequestContext, loader
 from printers.models import Printer
 from posts.forms import PostForm
 import datetime
-
+from django.core.mail import EmailMessage
 
 @login_required(login_url='/admin/')
 def index(request):
@@ -28,20 +28,16 @@ def detail(request, post_id):
 
 @login_required(login_url='/admin/')
 def post(request):
-    # if this is a POST request we need to process the form data
     if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
         form = PostForm(request.POST)
-        # check whether it's valid:
         if form.is_valid():
             post_content = form.cleaned_data['content']
             post_category_text = form.cleaned_data['category']
             post_category = Category.objects.get(category_description=post_category_text)
-            post_user = request.user
-            now = datetime.datetime.now()
             if not post_category:
                 post_category = Category.objects.get(category_description='Info')
-            # process the data in form.cleaned_data as required
+            post_user = request.user
+            now = datetime.datetime.now()
 
             post = Post(
                 user = post_user,
@@ -53,9 +49,10 @@ def post(request):
 
             # redirect to a new URL:
             return HttpResponseRedirect('/')
+    return HttpResponseRedirect('/')
 
-    # if a GET (or any other method) we'll create a blank form
-    else:
-        form = PostForm()
-
+@login_required(login_url='/admin/')
+def order(request):
+    email = EmailMessage('Hello', 'World', to=['user@gmail.com'])
+    email.send()
     return HttpResponseRedirect('/')
