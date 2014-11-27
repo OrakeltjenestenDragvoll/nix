@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
@@ -7,6 +8,8 @@ from printers.models import Printer
 from posts.forms import PostForm
 import datetime
 from django.core.mail import EmailMessage
+
+
 
 @login_required(login_url='/admin/')
 def index(request):
@@ -21,10 +24,6 @@ def index(request):
 
     })
     return HttpResponse(template.render(context))
-
-
-def detail(request, post_id):
-    return HttpResponse("You're looking at post %s." % post_id)
 
 @login_required(login_url='/admin/')
 def post(request):
@@ -53,6 +52,19 @@ def post(request):
 
 @login_required(login_url='/admin/')
 def order(request):
-    email = EmailMessage('Hello', 'World', to=['user@gmail.com'])
+    subject = "Papirbestilling Orakel Dragvoll"
+    content = "Hei,\n\nDet er behov for en ny palle med papir til oss på nivA 2 - ved heisen til Biblioteket.\n\n" \
+              "Tusen takk!\n\n--\nVennlig hilsen \nOrakeltjenesten Dragvoll"
+    headers = {'Reply-To': "dragvollorakel@ntnu.no"}
+    email = EmailMessage(subject, content, to=['ntnu-trykk@adm.ntnu.no'], headers=headers)
     email.send()
+    now = datetime.datetime.now()
+    category = Category.objects.get(category_description='Info')
+    post = Post(
+        user = request.user,
+        content = "Papirpalle til nivå 2 er bestilt",
+        published = now,
+        category = category,
+    )
+    post.save()
     return HttpResponseRedirect('/')

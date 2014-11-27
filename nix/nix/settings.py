@@ -90,3 +90,9 @@ STATIC_URL = '/templates/static/'
 TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
 
 SITE_ID = 1
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'orakeltjenestendragvoll@gmail.com'
+EMAIL_HOST_PASSWORD = 'sudankjeks1945'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
