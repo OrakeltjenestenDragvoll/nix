@@ -53,10 +53,13 @@ def post(request):
 @login_required(login_url='/admin/')
 def order(request):
     subject = "Papirbestilling Orakel Dragvoll"
-    content = "Hei,\n\nDet er behov for en ny palle med papir til oss på nivA 2 - ved heisen til Biblioteket.\n\n" \
-              "Tusen takk!\n\n--\nVennlig hilsen \nOrakeltjenesten Dragvoll"
+    content = "Hei!\n\nTrenger å bestille en/to pall(er) (48/96 kasser) A4-papir.\n\n" \
+              "Mottaker er Orakeltjenesten Dragvoll, bygg 8, nivå 5 Leveringssted er ved heis 7, nivå 2 (mellom bygg 6 og 8), NTNU Dragvoll, Edvard Bulls veg 1\n\n" \
+              "Kontaktinfo som transportøren kan ringe: Orakeltjenesten Dragvoll, tlf. 735 91810, \n\n" \
+              "Prosjektnummer.: 09115000 K-sted: 167325"\
+              "Denne eposte-adressen brukes ikke. Kontakt dragvollorakel@ntnu.no ved spørsmål"
     headers = {'Reply-To': "dragvollorakel@ntnu.no"}
-    email = EmailMessage(subject, content, to=['ntnu-trykk@adm.ntnu.no'], headers=headers)
+    email = EmailMessage(subject, content, to=['utstyrsbestilling@itea.ntnu.no'], headers=headers)
     email.send()
     now = datetime.datetime.now()
     category = Category.objects.get(category_description='Info')
