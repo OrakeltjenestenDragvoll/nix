@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext, loader
 from printers.models import Printer
+from posts.models import Post, Category
 import datetime
 
 @login_required(login_url='/admin/')
@@ -44,5 +45,16 @@ def printmon(request):
     template = loader.get_template('printers/printmon.html')
     context = RequestContext(request, {
         'printer_list': printer_list,
+    })
+    return HttpResponse(template.render(context))
+
+def printskjerm(request):
+    printer_list = Printer.objects.order_by('-name')
+    cat = Category.objects.filter(category_description='Infoskjerm')
+    message_list = Post.objects.order_by('published').filter(category=cat).reverse()[:2]
+    template = loader.get_template('printers/printskjerm.html')
+    context = RequestContext(request, {
+        'printer_list': printer_list,
+        'message_list': message_list
     })
     return HttpResponse(template.render(context))

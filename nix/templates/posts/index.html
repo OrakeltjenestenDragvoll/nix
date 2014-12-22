@@ -25,13 +25,20 @@
             <div class="panel-body">
                 {{ post.content }}
             </div>
-        <div class="panel-footer"> 
+        <div class="panel-footer">
         	Skrevet av:
             <span class="label label-default">{{ post.user.first_name }}</span>
             Kategori:
             <span class="label label-primary">{{ post.category.category_description }}</span>
             Publisert:
-            {{ post.published }}        
+            {{ post.published }}
+             
+            <form class="form form-inline" action="/delete/" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary btn-xs"> 
+              <i class="glyphicon glyphicon-remove-circle">
+                </i></button>
+            </form>
         </div>
         </div>
 
