@@ -66,6 +66,15 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
+    ,
+        'sql': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'nix_django',
+        'USER': 'root',
+        'PASSWORD': 'sudankjeks1945',
+        'HOST': 'localhost',
+        'PORT': '3306',
+    }
 }
 
 # Internationalization
@@ -97,6 +106,8 @@ TEMPLATE_DIRS = [
 ]
 
 SITE_ID = 1
+
+LOGIN_REDIRECT_URL = '/'
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'orakeltjenestendragvoll@gmail.com'
