@@ -89,6 +89,10 @@ SITE_ID = 1
 
 LOGIN_REDIRECT_URL = '/'
 
+#ORDER_TARGET_EMAIL = 'utstyrsbestilling@itea.ntnu.no'
+ORDER_TARGET_EMAIL = 'larserikgk@gmail.com'
+ORDER_COPY_EMAIL = 'larserikgk@gmail.com'
+
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'orakeltjenestendragvoll@gmail.com'
 EMAIL_HOST_PASSWORD = 'sudankjeks1945'

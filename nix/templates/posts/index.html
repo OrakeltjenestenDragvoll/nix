@@ -10,7 +10,9 @@
       Kategori: 
       {% if categories %}
         {% for category in categories %}
-          <input type="radio" name="category" value="{{category.category_description}}"> {{category.category_description}}
+          <label for="{{category.category_description}}">
+          <input type="radio" name="category" id="{{category.category_description}}" value="{{category.category_description}}"> {{category.category_description}}
+          </label>
         {% endfor %}
      {% endif %}
     <input type="submit" class="btn btn-default" value="Post" />
@@ -41,7 +43,6 @@
         </div>
     {% endfor %}
   <hr>
-  
   {% else %}
     <p>Det finnes ingen poster.</p>
   {% endif %}

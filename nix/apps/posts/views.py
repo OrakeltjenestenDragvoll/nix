@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
-from apps.posts.models import Post, Category
-from django.template import RequestContext, loader
-from apps.printers.models import Printer
-from apps.posts.forms import PostForm
-import datetime
 from django.core.mail import EmailMessage
 from django.shortcuts import render, redirect, get_object_or_404
-
+from django.template import RequestContext, loader
+from django.contrib import messages
+from apps.posts.models import Post, Category
+from apps.printers.models import Printer
+from apps.posts.forms import PostForm
+import nix.settings as settings
+import datetime
 
 
 @login_required(login_url='/admin/')
@@ -25,6 +26,7 @@ def index(request):
     })
     return HttpResponse(template.render(context))
 
+
 @login_required(login_url='/admin/')
 def post(request):
     if request.method == 'POST':
@@ -39,40 +41,74 @@ def post(request):
             now = datetime.datetime.now()
 
             post = Post(
-                user = post_user,
-                content = post_content,
-                published = now,
-                category = post_category,
+                user=post_user,
+                content=post_content,
+                published=now,
+                category=post_category,
             )
             post.save()
 
             # redirect to a new URL:
             return HttpResponseRedirect('/')
+    messages.warning(request, u"Ugyldig post. Fyll inn tekst eller velg kategori")
     return HttpResponseRedirect('/')
+
 
 @login_required(login_url='/admin/')
 def order(request):
-    subject = "Papirbestilling Orakel Dragvoll"
-    content = "Hei!\n\nTrenger å bestille en/to pall(er) (48/96 kasser) A4-papir.\n\n" \
-              "Mottaker er Orakeltjenesten Dragvoll, bygg 8, nivå 5 Leveringssted er ved heis 7, nivå 2 (mellom bygg 6 og 8), NTNU Dragvoll, Edvard Bulls veg 1\n\n" \
-              "Kontaktinfo som transportøren kan ringe: Orakeltjenesten Dragvoll, tlf. 735 91810, \n\n" \
-              "Prosjektnummer.: 09115000 K-sted: 167325"\
-              "Denne eposte-adressen brukes ikke. Kontakt dragvollorakel@ntnu.no ved spørsmål"
-    headers = {'Reply-To': "dragvollorakel@ntnu.no"}
-    email = EmailMessage(subject, content, to=['utstyrsbestilling@itea.ntnu.no'], headers=headers)
-    email.send()
-    now = datetime.datetime.now()
-    category = Category.objects.get(category_description='Info')
-    post = Post(
-        user = request.user,
-        content = "Papirpalle til nivå 2 er bestilt",
-        published = now,
-        category = category,
-    )
-    post.save()
-    return HttpResponseRedirect('/')
+    if request.method == 'POST':
+        template = loader.get_template('posts/confirm_order.html')
+        context = RequestContext(request)
+    return HttpResponse(template.render(context))
+
+
+@login_required(login_url='/admin/')
+def confirm_order(request):
+    if request.method == 'POST':
+        num_of_pallets = int(request.POST.get('numberOfPallets'))
+        print(num_of_pallets)
+        if num_of_pallets == 1:
+            num_of_boxes = 48
+        elif num_of_pallets == 2:
+            num_of_boxes = 96
+        else:
+            messages.error(request, u"Du kan ikke bestille mer enn 2 paller")
+            return HttpResponseRedirect('/')
+
+        subject = "Papirbestilling Orakel Dragvoll"
+        content = "Hei!\n\nTrenger å bestille " + str(num_of_pallets) + " pall (" + str(num_of_boxes) + " kasser) A4-papir.\n\n" \
+                  "Mottaker er Orakeltjenesten Dragvoll, bygg 8, nivå 5 Leveringssted er ved heis 7, nivå 2 (mellom bygg 6 og 8), NTNU Dragvoll, Edvard Bulls veg 1\n\n" \
+                  "Kontaktinfo som transportøren kan ringe: Orakeltjenesten Dragvoll, tlf. 735 91810, \n\n" \
+                  "Prosjektnummer.: 09115000 K-sted: 167325"\
+                  "\nDenne eposte-adressen brukes bare til sending av bestilling. Kontakt dragvollorakel@ntnu.no ved spørsmål"
+        headers = {'Reply-To': "dragvollorakel@ntnu.no"}
+        email = EmailMessage(subject, content, to=[settings.ORDER_TARGET_EMAIL, settings.ORDER_COPY_EMAIL], headers=headers)
+        email.send()
+        now = datetime.datetime.now()
+        category = Category.objects.get(category_description='Info')
+        post = Post(
+            user=request.user,
+            content="",
+            published=now,
+            category=category,
+        )
+        if num_of_pallets == 1:
+            post.content='En papirpalle er bestilt til nivå 2'
+        if num_of_pallets == 2:
+            post.content='To papirpaller er bestilt til nivå 2'
+        post.save()
+        return HttpResponseRedirect('/')
+    else:
+        return HttpResponseRedirect('/')
+
 
 @login_required(login_url='/admin/')
 def delete(request, post_id):
-    post = get_object_or_404(Post, pk=post_id).delete()
+    post = get_object_or_404(Post, pk=post_id)
+    if post.user.id is request.user.id:
+        messages.success(request, u"Posten ble slettet")
+        post.delete()
+    else:
+        messages.error(request, u"Du kan ikke slette denne posten")
+
     return HttpResponseRedirect('/')
