@@ -9,7 +9,6 @@
     <link href="{{ STATIC_URL }}css/bootstrap.css" rel="stylesheet" />
     <link href="{{ STATIC_URL }}css/custom.css" rel="stylesheet" />
     <link rel="shortcut icon" href="{{ STATIC_URL }}favicon.ico" />
-
     <title>Nix 2.0</title>
 
     <!-- Custom styles for this template -->
@@ -17,12 +16,6 @@
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="{{STATIC_URL}}js/ie10-viewport-bug-workaround.js"></script>
-
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
   </head>
 
   <body>
@@ -43,7 +36,6 @@
           <ul class="nav navbar-nav">
             <li><a href="/">Tavle</a></li>
             <li><a href="https://fuglane.it.ntnu.no">Fuglane</a></li>
-              <li><a href="/wiki">Wiki</a></li>
             <li><a href="/printers/printmon">Printmon</a></li>
             <li><a href="/printers/printskjerm">Printskjerm (gata)</a></li>
             <li><a href="/bujumbura">Bujumbura</a></li>
@@ -63,25 +55,12 @@
       <div class="jumbotron">
     <div class="container">
 
-
       <!-- Main component for a primary marketing message or call to action -->
-
-          
             {% block content %} {%endblock %}
-
-
         </div>
 
     </div> <!-- /container -->
-
-    <div id="footer">
-      <div class="container">
-        <p class="muted credit">Utviklet av <a href="https://www.github.com/larserikgk">Lars Erik</a> for Orakeltjenesten Dragvoll</a>.</p>
-      </div>
-    </div>
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
+    <!-- Bootstrap core JavaScript -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="http://folk.ntnu.no/grasdalk/js/bootstrap.js"></script>
   </body>

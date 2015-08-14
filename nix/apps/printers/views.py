@@ -1,8 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext, loader
-from printers.models import Printer
-from posts.models import Post, Category
+from apps.printers.models import Printer
+from apps.posts.models import Post, Category
 import datetime
 
 @login_required(login_url='/admin/')

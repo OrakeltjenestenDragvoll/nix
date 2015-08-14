@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
-from posts.models import Post, Category
+from apps.posts.models import Post, Category
 from django.template import RequestContext, loader
-from printers.models import Printer
-from posts.forms import PostForm
+from apps.printers.models import Printer
+from apps.posts.forms import PostForm
 import datetime
 from django.core.mail import EmailMessage
 from django.shortcuts import render, redirect, get_object_or_404

@@ -1,31 +1,11 @@
-"""
-Django settings for nix project.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/1.7/topics/settings/
-
-For the full list of settings and their values, see
-https://docs.djangoproject.com/en/1.7/ref/settings/
-"""
-
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 't&@bk6jp(hqglq4!3c3yj3q*aq%1tenyr0=^kvinjs(jhz!0mi'
-
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
 TEMPLATE_DEBUG = True
+SECRET_KEY = 'override this in prod'
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -38,8 +18,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.flatpages',
     'django.contrib.sites',
-    'posts',
-    'printers',
+    'apps.posts',
+    'apps.printers',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -66,15 +46,15 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
-    ,
-        'sql': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'nix_django',
-        'USER': 'root',
-        'PASSWORD': 'sudankjeks1945',
-        'HOST': 'localhost',
-        'PORT': '3306',
-    }
+    #,
+    #    'sql': {
+    #    'ENGINE': 'django.db.backends.mysql',
+    #    'NAME': 'nix_django',
+    #    'USER': 'root',
+    #    'PASSWORD': 'sudankjeks1945',
+    #    'HOST': 'localhost',
+    #    'PORT': '3306',
+    #}
 }
 
 # Internationalization
