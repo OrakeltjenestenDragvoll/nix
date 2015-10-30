@@ -17,7 +17,7 @@ def index(request):
     latest_post_list = Post.objects.order_by('-published')[:10]
     printer_list = Printer.objects.order_by('-name')
     categories = Category.objects.all()
-    log = PaperLogEntry.objects.order_by('-published')[:1]
+    log = PaperLogEntry.objects.order_by('-date')[:1]
     template = loader.get_template('posts/index.html')
     context = RequestContext(request, {
         'latest_post_list': latest_post_list,
