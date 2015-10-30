@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.template import RequestContext, loader
 from django.contrib import messages
 from apps.posts.models import Post, Category
-from apps.printers.models import Printer
+from apps.printers.models import Printer, PaperLogEntry
 from apps.posts.forms import PostForm
 import nix.settings as settings
 import datetime
@@ -17,12 +17,13 @@ def index(request):
     latest_post_list = Post.objects.order_by('-published')[:10]
     printer_list = Printer.objects.order_by('-name')
     categories = Category.objects.all()
+    log = PaperLogEntry.objects.order_by('-published')[:1]
     template = loader.get_template('posts/index.html')
     context = RequestContext(request, {
         'latest_post_list': latest_post_list,
         'printer_list': printer_list,
         'categories': categories,
-
+        'last_log': log,
     })
     return HttpResponse(template.render(context))
 

@@ -16,7 +16,7 @@ class Printer(models.Model):
         return self.name
 
 
-class LogEntry(models.Model):
+class PaperLogEntry(models.Model):
     user = models.ForeignKey(User, unique=False)
     date = models.DateTimeField()
 
