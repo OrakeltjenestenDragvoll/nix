@@ -1,9 +1,10 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext, loader
-from apps.printers.models import Printer
+from apps.printers.models import Printer, LogEntry
 from apps.posts.models import Post, Category
 import datetime
+
 
 @login_required(login_url='/admin/')
 def index(request):
@@ -20,23 +21,24 @@ def get_printers(request):
 
     return HttpResponseRedirect('/')
 
+
 @login_required(login_url='/admin/')
 def update(request):
     if request.method == 'POST':
             current_printers = Printer.objects.all()
             for current_printer in current_printers:
                 if float(request.POST[current_printer.name]) > 0:
-                    current_printer.paper_text = request.POST[current_printer.name]
-                    current_printer.paper_remaining = float(request.POST[current_printer.name]) * 2500
+                    current_printer.paper_text = request.POST[current_printer.name].replace(',', '.')
+                    current_printer.paper_remaining = float(current_printer.paper_text) * 2500
                     current_printer.save()
-
+            log_entry = LogEntry(request.user, datetime.datetime.now())
+            log_entry.save()
 
             # redirect to a new URL:
             return HttpResponseRedirect('/')
 
     # if a GET (or any other method) we'll create a blank form
     else:
-
         return HttpResponseRedirect('/')
 
 
@@ -47,6 +49,7 @@ def printmon(request):
         'printer_list': printer_list,
     })
     return HttpResponse(template.render(context))
+
 
 def printskjerm(request):
     printer_list = Printer.objects.order_by('-name')

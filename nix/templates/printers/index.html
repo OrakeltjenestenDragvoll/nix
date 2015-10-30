@@ -40,6 +40,11 @@
 {% else %}
 <p>Det finnes ingen printere.</p>
 {% endif %}
+<hr>
+Siste oppdatering:<br>
+{{last_log}}
+<hr>
+
     <form action="/order/" method="post">
         {% csrf_token %}
         {{ form }}

@@ -14,3 +14,11 @@ class Printer(models.Model):
 
     def __unicode__(self):
         return self.name
+
+
+class LogEntry(models.Model):
+    user = models.ForeignKey(User, unique=False)
+    date = models.DateTimeField()
+
+    def __unicode__(self):
+        return self.user + self.date
