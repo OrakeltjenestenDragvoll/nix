@@ -41,8 +41,10 @@
 <p>Det finnes ingen printere.</p>
 {% endif %}
 <hr>
+{% if last_log %}
 Siste oppdatering:<br>
-{{last_log}}
+{{last_log.date}} av {{last_log.user}}
+{% endif %}
 <hr>
 
     <form action="/order/" method="post">

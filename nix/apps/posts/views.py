@@ -9,7 +9,7 @@ from apps.posts.models import Post, Category
 from apps.printers.models import Printer, PaperLogEntry
 from apps.posts.forms import PostForm
 import nix.settings as settings
-import datetime
+from datetime import datetime
 
 
 @login_required(login_url='/admin/')
@@ -39,7 +39,7 @@ def post(request):
             if not post_category:
                 post_category = Category.objects.get(category_description='Info')
             post_user = request.user
-            now = datetime.datetime.now()
+            now = datetime.now()
 
             post = Post(
                 user=post_user,
