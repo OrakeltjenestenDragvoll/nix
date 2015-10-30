@@ -18,7 +18,7 @@ class Printer(models.Model):
 
 class PaperLogEntry(models.Model):
     user = models.ForeignKey(User, unique=False)
-    date = models.DateTimeField()
+    date = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
         return self.user + self.date

@@ -33,7 +33,8 @@ def update(request):
                     current_printer.save()
             now = datetime.datetime.now()
             log_user = request.user
-            log_entry = PaperLogEntry(log_user, now)
+            log_entry = PaperLogEntry()
+            log_entry[log_user] = log_user
             log_entry.save()
 
             # redirect to a new URL:
