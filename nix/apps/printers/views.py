@@ -31,10 +31,10 @@ def update(request):
                     current_printer.paper_text = request.POST[current_printer.name]
                     current_printer.paper_remaining = float(current_printer.paper_text) * 2500
                     current_printer.save()
-            now = datetime.now()
-            log_user = request.user.id
-            log_entry = PaperLogEntry(log_user, now)
-            log_entry.save()
+            #now = datetime.now()
+            #log_user = request.user.id
+            #log_entry = PaperLogEntry(log_user, now)
+            #log_entry.save()
 
             # redirect to a new URL:
             return HttpResponseRedirect('/')
