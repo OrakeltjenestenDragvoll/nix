@@ -27,9 +27,9 @@ def update(request):
     if request.method == 'POST':
             current_printers = Printer.objects.all()
             for current_printer in current_printers:
-                if float(request.POST[current_printer.name]) > 0:
+                if float(request.POST[current_printer.name].replace(',', '.')) > 0:
                     current_printer.paper_text = request.POST[current_printer.name]
-                    current_printer.paper_remaining = float(current_printer.paper_text) * 2500
+                    current_printer.paper_remaining = float(current_printer.paper_text.replace(',', '.')) * 2500
                     current_printer.save()
             #now = datetime.now()
             #log_user = request.user.id
