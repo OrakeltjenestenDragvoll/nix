@@ -18,8 +18,9 @@ class Command(BaseCommand):
         for i in range(0, len(printer_list)):
             for y in range(0, len(data)):
                 if data[y]['name'] == printer_list[i].name:
-                    statuses[data[i]['name']] = data[i]['status']
-                    papercount[data[i]['name']] = data[i]['paperCounter']
+                    if i <= y:
+                        statuses[data[i]['name']] = data[i]['status']
+                        papercount[data[i]['name']] = data[i]['paperCounter']
 
         print 'JSON length: ' + str(len(data))
         print 'DB length: ' + str(len(printer_list))
