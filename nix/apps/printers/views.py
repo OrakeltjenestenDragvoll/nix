@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext, loader
 from apps.printers.models import Printer, PaperLogEntry
 from apps.posts.models import Post, Category
-from datetime import datetime
+import datetime
 
 
 @login_required(login_url='/admin/')
@@ -31,10 +31,11 @@ def update(request):
                     current_printer.paper_text = request.POST[current_printer.name]
                     current_printer.paper_remaining = float(current_printer.paper_text.replace(',', '.')) * 2500
                     current_printer.save()
-            #now = datetime.now()
-            #log_user = request.user.id
-            #log_entry = PaperLogEntry(log_user, now)
-            #log_entry.save()
+            now = datetime.datetime.now()
+            log_user = request.user
+            log_entry = PaperLogEntry()
+            log_entry.user = log_user
+            log_entry.save()
 
             # redirect to a new URL:
             return HttpResponseRedirect('/')
