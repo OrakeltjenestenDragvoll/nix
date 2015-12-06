@@ -4,6 +4,7 @@ from apps.printers.models import Printer
 import urllib2
 import json
 
+sheets_per_box = 2500.00
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
@@ -12,7 +13,6 @@ class Command(BaseCommand):
         data = byteify(data)
         statuses = {}
         papercount = {}
-        sheets_per_box = 2500
 
         for i in range(0, len(printer_list)):
             for y in range(0, len(data)):
@@ -28,8 +28,20 @@ class Command(BaseCommand):
 
         for key, value in statuses.iteritems():
             printer = Printer.objects.get(name=key)
+            difference = papercount[key] - printer.last_read
+            printer.paper_remaining = printer.paper_remaining - difference
+            printer.paper_text = unicode(round(printer.paper_remaining/sheets_per_box, 2))
             printer.status = value
             printer.last_read = papercount[key]
+            printer.save()
+
+def update_printer(name, status, lastread):
+            printer = Printer.objects.get(name=name)
+            difference = lastread - printer.last_read
+            printer.paper_remaining = printer.paper_remaining - difference
+            printer.paper_text = unicode(round(printer.paper_remaining/sheets_per_box, 2))
+            printer.status = status
+            printer.last_read = lastread
             printer.save()
 
 
