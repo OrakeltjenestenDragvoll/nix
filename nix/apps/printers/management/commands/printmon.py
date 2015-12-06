@@ -6,6 +6,7 @@ import json
 
 sheets_per_box = 2500.00
 
+
 class Command(BaseCommand):
     def handle(self, *args, **options):
         printer_list = list(Printer.objects.all())
@@ -27,13 +28,8 @@ class Command(BaseCommand):
             print key + ' : ' + str(papercount[key])
 
         for key, value in statuses.iteritems():
-            printer = Printer.objects.get(name=key)
-            difference = papercount[key] - printer.last_read
-            printer.paper_remaining = printer.paper_remaining - difference
-            printer.paper_text = unicode(round(printer.paper_remaining/sheets_per_box, 2))
-            printer.status = value
-            printer.last_read = papercount[key]
-            printer.save()
+            update_printer(key, value, papercount[key])
+
 
 def update_printer(name, status, lastread):
             printer = Printer.objects.get(name=name)
@@ -44,13 +40,25 @@ def update_printer(name, status, lastread):
             printer.last_read = lastread
             printer.save()
 
+            if printer.name == '10.3v':
+                aux_printer = Printer.objects.get(name='10.3h')
+                aux_printer.paper_remaining = printer.paper_remaining - difference
+                aux_printer.paper_text = unicode(round(printer.paper_remaining/sheets_per_box, 2))
+                aux_printer.save()
 
-def byteify(input):
-    if isinstance(input, dict):
-        return {byteify(key):byteify(value) for key,value in input.iteritems()}
-    elif isinstance(input, list):
-        return [byteify(element) for element in input]
-    elif isinstance(input, unicode):
-        return input.encode('utf-8')
+            if printer.name == '10.3h':
+                aux_printer = Printer.objects.get(name='10.3v')
+                aux_printer.paper_remaining = aux_printer.paper_remaining - difference
+                aux_printer.paper_text = unicode(round(aux_printer.paper_remaining/sheets_per_box, 2))
+                aux_printer.save()
+
+
+def byteify(data):
+    if isinstance(data, dict):
+        return {byteify(key):byteify(value) for key,value in data.iteritems()}
+    elif isinstance(data, list):
+        return [byteify(element) for element in data]
+    elif isinstance(data, unicode):
+        return data.encode('utf-8')
     else:
-        return input
+        return data
