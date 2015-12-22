@@ -39,7 +39,7 @@ def post(request):
             if not post_category:
                 post_category = Category.objects.get(category_description='Info')
             post_user = request.user
-            now = datetime.now()
+            now = datetime.datetime.now()
 
             post = Post(
                 user=post_user,
