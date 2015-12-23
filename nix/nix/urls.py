@@ -7,7 +7,8 @@ urlpatterns = patterns('',
 
     url(r'^$', include('apps.posts.urls')),
     url(r'^printers/', include('apps.printers.urls')),
-                       
+    url(r'^bujumbura/', include('apps.bujumbura.urls')),
+
     url(r'^post/', post_views.post, name='post'),
     url(r'^order/', post_views.order, name='order'),
     url(r'^confirm_order/', post_views.confirm_order, name='order'),
