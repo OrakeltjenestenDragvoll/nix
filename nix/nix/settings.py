@@ -7,8 +7,6 @@ SECRET_KEY = 'override this in prod'
 
 ALLOWED_HOSTS = []
 
-# Application definition
-
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
@@ -70,7 +68,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
@@ -92,7 +89,7 @@ LOGIN_REDIRECT_URL = '/'
 PRINTMON_URL = 'http://nix.svt.ntnu.no:8080'
 
 #ORDER_TARGET_EMAIL = 'utstyrsbestilling@itea.ntnu.no'
-ORDER_TARGET_EMAIL = 'larserikgk@gmail.com'
+ORDER_TARGET_EMAIL = 'example@example.com'
 ORDER_COPY_EMAIL = 'larserikgk@gmail.com'
 
 EMAIL_HOST = 'smtp.gmail.com'

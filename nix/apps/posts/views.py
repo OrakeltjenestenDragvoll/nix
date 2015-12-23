@@ -9,7 +9,7 @@ from apps.posts.models import Post, Category
 from apps.printers.models import Printer, PaperLogEntry
 from apps.posts.forms import PostForm
 import nix.settings as settings
-from datetime import datetime
+import datetime
 
 
 @login_required(login_url='/admin/')
@@ -23,7 +23,7 @@ def index(request):
         'latest_post_list': latest_post_list,
         'printer_list': printer_list,
         'categories': categories,
-        'last_log': log,
+        'last_log': log[0],
     })
     return HttpResponse(template.render(context))
 
@@ -77,11 +77,11 @@ def confirm_order(request):
             return HttpResponseRedirect('/')
 
         subject = "Papirbestilling Orakel Dragvoll"
-        content = "Hei!\n\nTrenger å bestille " + str(num_of_pallets) + " pall (" + str(num_of_boxes) + " kasser) A4-papir.\n\n" \
-                  "Mottaker er Orakeltjenesten Dragvoll, bygg 8, nivå 5 Leveringssted er ved heis 7, nivå 2 (mellom bygg 6 og 8), NTNU Dragvoll, Edvard Bulls veg 1\n\n" \
+        content = "Hei!\n\nØnsker å bestille " + str(num_of_pallets) + " pall (" + str(num_of_boxes) + " kasser) A4-papir.\n\n" \
+                  "Mottaker er Orakeltjenesten Dragvoll, bygg 8, nivå 5. Leveringssted er ved heis 7, nivå 2 (mellom bygg 6 og 8), NTNU Dragvoll, Edvard Bulls veg 1\n\n" \
                   "Kontaktinfo som transportøren kan ringe: Orakeltjenesten Dragvoll, tlf. 735 91810, \n\n" \
                   "Prosjektnummer.: 09115000 K-sted: 167325"\
-                  "\nDenne eposte-adressen brukes bare til sending av bestilling. Kontakt dragvollorakel@ntnu.no ved spørsmål"
+                  "\nDenne epost-adressen brukes bare til sending av bestillinger. Kontakt dragvollorakel@ntnu.no ved spørsmål"
         headers = {'Reply-To': "dragvollorakel@ntnu.no"}
         email = EmailMessage(subject, content, to=[settings.ORDER_TARGET_EMAIL, settings.ORDER_COPY_EMAIL], headers=headers)
         email.send()

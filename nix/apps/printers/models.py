@@ -21,4 +21,4 @@ class PaperLogEntry(models.Model):
     date = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
-        return self.user + self.date
+        return unicode(self.user) + ':' + unicode(self.date)
