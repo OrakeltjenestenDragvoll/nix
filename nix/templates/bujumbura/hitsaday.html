@@ -1,0 +1,93 @@
+<html>
+<head>
+        <script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js'></script>
+
+        <!-- this UL will be populated with the data from the php array -->
+        <ul></ul>
+
+        <script type='text/javascript'>
+			$(document).ready(function() {
+				var chart;
+				var day = [];
+				var a = [];
+				var b = [];
+				var c = [];
+				
+				
+				var options = {
+					chart: {
+						renderTo: 'container',
+						type: 'column'
+					},
+					title: {
+						text: 'Saker per dag'
+					},
+					subtitle: {
+						text: 'Source: bujumbura'
+					},
+					xAxis: {
+						categories: []
+					},
+					yAxis: {
+						min: 0,
+						title: {
+							text: 'Antall Saker'
+						}
+					},
+					legend: {
+						layout: 'vertical',
+						backgroundColor: '#FFFFFF',
+						align: 'left',
+						verticalAlign: 'top',
+						x: 100,
+						y: 70,
+						floating: true,
+						shadow: true
+					},
+					tooltip: {
+						formatter: function() {
+							return ''+
+								this.x +': '+ this.y +' Saker';
+						}
+					},
+					plotOptions: {
+						column: {
+							pointPadding: 0.2,
+							borderWidth: 0
+						}
+					},
+					series: []
+					
+				};
+				
+					/* call the php that has the php array which is json_encoded */
+				$.getJSON('hitsADayServe.php', function(data) {
+					/* data will hold the php array as a javascript object */
+					
+					$.each(data, function(key, val) {
+						options.xAxis.categories.push(val.day);
+						//options.series.data.push(parseInt(val.a));
+						day.push(val.day);
+						a.push(val.a);
+						b.push(val.b);
+						c.push(val.c);
+						//	$('ul').append('<li id="' + key + '">' + val.day + ' ' + val.a + ' ' + val.b + ' ' + val.c + '</li>');
+					});
+					options.series.push({name:"NtnuIT",data:c});
+					options.series.push({name:"SVT IT og IT HF",data:b});
+					options.series.push({name:"Annet",data:a});
+					
+					chart = new Highcharts.Chart(options);
+				});
+			});
+        </script>
+
+</head>
+	<body>
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="http://code.highcharts.com/modules/exporting.js"></script>
+
+<div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+
+	</body>
+</html>

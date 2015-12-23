@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+		<div class="container">
+			<div class="hero-unit span9">
+				<h1> Bujumbura</h1>
+				<h2> Knappesystemet til orakeltjensten dragvoll</h2>
+			</div>
+			<div class="span3">
+				<ul class="nav">
+					<li><a href="{% url 'bujumbura-hitsaday' %}">Treff per dag</a></li>
+					<li><a href="{% url 'bujumbura-hitsadaystacked' %}">Totalt antal treff per dag</a></li>
+					<li><a href="{% url 'bujumbura-weekday' %}">Treff per ukedag</a></li>
+				</ul>
+			</div>
+		</div>
+{% endblock %}
