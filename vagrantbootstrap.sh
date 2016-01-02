@@ -97,7 +97,6 @@ function prepare_and_run_nix() {
 
 init
 update_packages
-update_packages
 install_packages
 setup_virtualenv
 install_nix_requirements

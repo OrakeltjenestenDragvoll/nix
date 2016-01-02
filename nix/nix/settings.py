@@ -1,9 +1,8 @@
 import os
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+import sys
 
-DEBUG = True
-TEMPLATE_DEBUG = True
-SECRET_KEY = 'override this in prod'
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+PROJECT_SETTINGS_DIRECTORY = os.path.dirname(os.path.join(BASE_DIR, 'nix', 'settings'))
 
 ALLOWED_HOSTS = []
 
@@ -34,22 +33,6 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'nix.urls'
 
 WSGI_APPLICATION = 'nix.wsgi.application'
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-    #,
-    #    'sql': {
-    #    'ENGINE': 'django.db.backends.mysql',
-    #    'NAME': 'nix_django',
-    #    'USER': 'root',
-    #    'PASSWORD': 'sudankjeks1945',
-    #    'HOST': 'localhost',
-    #    'PORT': '3306',
-    #}
-}
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
@@ -83,14 +66,19 @@ SITE_ID = 1
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/auth/login/'
 
-PRINTMON_URL = 'http://nix.svt.ntnu.no:8080'
-
-#ORDER_TARGET_EMAIL = 'utstyrsbestilling@itea.ntnu.no'
-ORDER_TARGET_EMAIL = 'example@example.com'
-ORDER_COPY_EMAIL = 'larserikgk@gmail.com'
-
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'orakeltjenestendragvoll@gmail.com'
-EMAIL_HOST_PASSWORD = 'sudankjeks1945'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+# Remember to keep 'local' last, so it can override any setting.
+for settings_module in ['local']:  # local last
+    if not os.path.exists(os.path.join(PROJECT_SETTINGS_DIRECTORY,
+            settings_module + ".py")):
+        sys.stderr.write("Could not find settings module '%s'.\n" %
+                settings_module)
+        if settings_module == 'local':
+            sys.stderr.write("You need to copy the settings file "
+                             "'studlan/settings/example-local.py' to "
+                             "'studlan/settings/local.py'.\n")
+        sys.exit(1)
+    try:
+        exec('from %s import *' % settings_module)
+    except ImportError, e:
+        print "Could not import settings for '%s' : %s" % (settings_module,
+                str(e))
