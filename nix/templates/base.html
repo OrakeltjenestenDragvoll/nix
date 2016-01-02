@@ -21,7 +21,7 @@
   <body>
 
     <!-- Fixed navbar -->
-    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="navbar navbar-fixed-top navbar-default" role="navigation">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -48,7 +48,6 @@
           </ul>
         </div><!--/.nav-collapse -->
       </div>
-
     </div>
 
 
@@ -57,21 +56,20 @@
 
       <!-- Main component for a primary marketing message or call to action -->
       {% if messages %}
-      	<div class="row">
-            <div id="message-list" class="col-md-9">
-                {% for message in messages %}
-                    
-                            <div class="flash fade in alert alert-dismissible alert-{{ message.tags }}"> 
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <p>{{ message }}</p>
-                            </div>
-                        
-                {% endfor %}
-                </div>
-                    </div>
-            {% endif %}
-            {% block content %} {%endblock %}
-        </div>
+        {% for message in messages %}
+          <div class="row">
+            <div id="message-list" class="col-md-9">     
+              <div class="flash fade in alert alert-dismissible alert-{{ message.tags }}"> 
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                  <p>{{ message }}</p>
+              </div>                       
+            </div>
+          </div>
+        {% endfor %}
+      {% endif %}
+
+      {% block content %} {%endblock %}
+      </div>
 
     </div> <!-- /container -->
     <!-- Bootstrap core JavaScript -->

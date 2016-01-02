@@ -35,10 +35,6 @@ ROOT_URLCONF = 'nix.urls'
 
 WSGI_APPLICATION = 'nix.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/1.7/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -85,6 +81,7 @@ TEMPLATE_DIRS = [
 SITE_ID = 1
 
 LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = '/auth/login/'
 
 PRINTMON_URL = 'http://nix.svt.ntnu.no:8080'
 

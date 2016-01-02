@@ -1,5 +1,6 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
+
 from apps.posts import views as post_views
 
 urlpatterns = patterns('',
@@ -8,6 +9,7 @@ urlpatterns = patterns('',
     url(r'^$', include('apps.posts.urls')),
     url(r'^printers/', include('apps.printers.urls')),
     url(r'^bujumbura/', include('apps.bujumbura.urls')),
+    url(r'^auth/', include('apps.auth.urls')),
 
     url(r'^post/', post_views.post, name='post'),
     url(r'^order/', post_views.order, name='order'),

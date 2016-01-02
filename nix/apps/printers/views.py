@@ -1,12 +1,14 @@
+import datetime
+
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext, loader
+
 from apps.printers.models import Printer, PaperLogEntry
 from apps.posts.models import Post, Category
-import datetime
 
 
-@login_required(login_url='/admin/')
+@login_required()
 def index(request):
     printer_list = Printer.objects.order_by('-name')
     template = loader.get_template('printers/index.html')
@@ -22,7 +24,7 @@ def get_printers(request):
     return HttpResponseRedirect('/')
 
 
-@login_required(login_url='/admin/')
+@login_required()
 def update(request):
     if request.method == 'POST':
             current_printers = Printer.objects.all()

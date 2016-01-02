@@ -1,34 +1,40 @@
 # -*- coding: utf-8 -*-
+import datetime
+
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.mail import EmailMessage
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template import RequestContext, loader
 from django.contrib import messages
+
 from apps.posts.models import Post, Category
 from apps.printers.models import Printer, PaperLogEntry
 from apps.posts.forms import PostForm
 import nix.settings as settings
-import datetime
 
 
-@login_required(login_url='/admin/')
+@login_required()
 def index(request):
     latest_post_list = Post.objects.order_by('-published')[:10]
     printer_list = Printer.objects.order_by('-name')
     categories = Category.objects.all()
     log = PaperLogEntry.objects.order_by('-date')[:1]
+    if not log:
+        log = None
+    else:
+        log = log[0]
     template = loader.get_template('posts/index.html')
     context = RequestContext(request, {
         'latest_post_list': latest_post_list,
         'printer_list': printer_list,
         'categories': categories,
-        'last_log': log[0],
+        'last_log': log,
     })
     return HttpResponse(template.render(context))
 
 
-@login_required(login_url='/admin/')
+@login_required()
 def post(request):
     if request.method == 'POST':
         form = PostForm(request.POST)
@@ -55,7 +61,7 @@ def post(request):
     return HttpResponseRedirect('/')
 
 
-@login_required(login_url='/admin/')
+@login_required()
 def order(request):
     if request.method == 'POST':
         template = loader.get_template('posts/confirm_order.html')
@@ -63,7 +69,7 @@ def order(request):
     return HttpResponse(template.render(context))
 
 
-@login_required(login_url='/admin/')
+@login_required()
 def confirm_order(request):
     if request.method == 'POST':
         num_of_pallets = int(request.POST.get('numberOfPallets'))
@@ -103,12 +109,12 @@ def confirm_order(request):
         return HttpResponseRedirect('/')
 
 
-@login_required(login_url='/admin/')
+@login_required()
 def delete(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
-    if post.user.id is request.user.id:
-        messages.success(request, u"Posten ble slettet")
+    if post.user == request.user:
         post.delete()
+        messages.success(request, u"Posten ble slettet")
     else:
         messages.error(request, u"Du kan ikke slette denne posten")
 

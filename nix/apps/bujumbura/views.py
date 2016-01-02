@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.template import RequestContext, loader
 
 
-#@login_required(login_url='/admin/')
+@login_required()
 def index(request):
     template = loader.get_template('bujumbura/bujumbura.html')
     context = RequestContext(request, {    })
@@ -13,7 +13,7 @@ def index(request):
     return HttpResponse(template.render(context))
 
 
-#@login_required(login_url='/admin/')
+@login_required()
 def hits_pr_day(request):
     template = loader.get_template('bujumbura/hitsaday.html')
     context = RequestContext(request, {    })
@@ -21,7 +21,7 @@ def hits_pr_day(request):
     return HttpResponse(template.render(context))
 
 
-#@login_required(login_url='/admin/')
+@login_required()
 def hits_pr_day_stacked(request):
     template = loader.get_template('bujumbura/hitsadaystacked.html')
     context = RequestContext(request, {    })
@@ -29,7 +29,7 @@ def hits_pr_day_stacked(request):
     return HttpResponse(template.render(context))
 
 
-#@login_required(login_url='/admin/')
+@login_required()
 def weekday(request):
     template = loader.get_template('bujumbura/weekend.html')
     context = RequestContext(request, {    })
