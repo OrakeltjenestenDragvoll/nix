@@ -68,10 +68,8 @@ LOGIN_URL = '/auth/login/'
 
 # Remember to keep 'local' last, so it can override any setting.
 for settings_module in ['local']:  # local last
-    if not os.path.exists(os.path.join(PROJECT_SETTINGS_DIRECTORY,
-            settings_module + ".py")):
-        sys.stderr.write("Could not find settings module '%s'.\n" %
-                settings_module)
+    if not os.path.exists(os.path.join(PROJECT_SETTINGS_DIRECTORY, settings_module + ".py")):
+        sys.stderr.write("Could not find settings module '%s'.\n" % settings_module)
         if settings_module == 'local':
             sys.stderr.write("You need to copy the settings file "
                              "'studlan/settings/example-local.py' to "
@@ -80,5 +78,4 @@ for settings_module in ['local']:  # local last
     try:
         exec('from %s import *' % settings_module)
     except ImportError, e:
-        print "Could not import settings for '%s' : %s" % (settings_module,
-                str(e))
+        print "Could not import settings for '%s' : %s" % (settings_module, str(e))
