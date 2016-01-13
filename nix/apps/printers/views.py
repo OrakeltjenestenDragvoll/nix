@@ -1,5 +1,3 @@
-import datetime
-
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext, loader
@@ -10,17 +8,10 @@ from apps.posts.models import Post, Category
 
 @login_required()
 def index(request):
-    printer_list = Printer.objects.order_by('-name')
-    template = loader.get_template('printers/index.html')
-    context = RequestContext(request, {
-        'printer_list': printer_list,
-    })
-    #return HttpResponse(template.render(context))
     return HttpResponseRedirect('/')
 
 
 def get_printers(request):
-
     return HttpResponseRedirect('/')
 
 
@@ -30,10 +21,9 @@ def update(request):
             current_printers = Printer.objects.all()
             for current_printer in current_printers:
                 if float(request.POST[current_printer.name].replace(',', '.')) > 0:
-                    current_printer.paper_text = request.POST[current_printer.name]
+                    current_printer.paper_text = request.POST[current_printer.name].replace(',', '.')
                     current_printer.paper_remaining = float(current_printer.paper_text.replace(',', '.')) * 2500
                     current_printer.save()
-            now = datetime.datetime.now()
             log_user = request.user
             log_entry = PaperLogEntry()
             log_entry.user = log_user
