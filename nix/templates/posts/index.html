@@ -11,7 +11,11 @@
       {% if categories %}
         {% for category in categories %}
           <label for="{{category.category_description}}">
-          <input type="radio" name="category" id="{{category.category_description}}" value="{{category.category_description}}"> {{category.category_description}}
+          {% if category.category_description == "Info" %}
+              <input type="radio" name="category" id="{{category.category_description}}" value="{{category.category_description}}" checked="checked"> {{category.category_description}}
+          {% else %}
+              <input type="radio" name="category" id="{{category.category_description}}" value="{{category.category_description}}"> {{category.category_description}}
+          {% endif %}
           </label>
         {% endfor %}
      {% endif %}
