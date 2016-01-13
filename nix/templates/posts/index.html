@@ -19,8 +19,8 @@
   </form>
   <hr>
 
-  {% if latest_post_list %}
-    {% for post in latest_post_list %}
+  {% if posts %}
+    {% for post in posts %}
         <div class="panel panel-default">
             <div class="panel-body">
                 {{ post.content }}
@@ -46,7 +46,23 @@
   {% else %}
     <p>Det finnes ingen poster.</p>
   {% endif %}
-  
+  {% if posts.paginator.num_pages > 1 %}
+                <div class="container-fluid text-center">
+                    {% if posts.has_previous %}
+                        <a href="?page={{ posts.previous_page_number }}&amp;query={{ query }}&amp;faculty_code={{ selected }}">&lt;&lt;</a>
+                    {% else %}
+                        &lt;&lt;
+                    {% endif %}
+
+                    {{ posts.number }} av {{ posts.paginator.num_pages }}
+
+                    {% if posts.has_next %}
+                        <a href="?page={{ posts.next_page_number }}&amp;query={{ query }}&amp;faculty_code={{ selected }}">>></a>
+                     {% else %}
+                        >>
+                    {% endif %}
+                </div>
+            {% endif %}
 </div>
 
 <div class="col-md-2">
