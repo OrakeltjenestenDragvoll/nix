@@ -18,3 +18,5 @@ class Post(models.Model):
     def __unicode__(self):
         return self.content
 
+    class Meta:
+        ordering = ['-published']

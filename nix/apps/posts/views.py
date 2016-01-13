@@ -17,7 +17,7 @@ import nix.settings as settings
 
 @login_required()
 def index(request):
-    posts = Post.objects.order_by('-published')
+    posts = Post.objects.all()
     printer_list = Printer.objects.order_by('-name')
     categories = Category.objects.all()
     log = PaperLogEntry.objects.order_by('-date')[:1]
