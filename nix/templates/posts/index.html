@@ -49,7 +49,7 @@
   {% if posts.paginator.num_pages > 1 %}
                 <div class="container-fluid text-center">
                     {% if posts.has_previous %}
-                        <a href="?page={{ posts.previous_page_number }}&amp;query={{ query }}&amp;faculty_code={{ selected }}">&lt;&lt;</a>
+                        <a href="?page={{ posts.previous_page_number }}">&lt;&lt;</a>
                     {% else %}
                         &lt;&lt;
                     {% endif %}
@@ -57,7 +57,7 @@
                     {{ posts.number }} av {{ posts.paginator.num_pages }}
 
                     {% if posts.has_next %}
-                        <a href="?page={{ posts.next_page_number }}&amp;query={{ query }}&amp;faculty_code={{ selected }}">>></a>
+                        <a href="?page={{ posts.next_page_number }}">>></a>
                      {% else %}
                         >>
                     {% endif %}
