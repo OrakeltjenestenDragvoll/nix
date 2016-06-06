@@ -42,10 +42,13 @@
 {% endif %}
 <hr>
 {% if last_log %}
-Siste oppdatering:<br>
+<b>Siste oppdatering:</b><br>
 {{last_log.date}} av {{last_log.user.first_name}}<br>
-<a href="/printers/logs?type=humans">Se alle</a>
+<a href="/printers/logs?type=humans">Se alle</a><br><br>
 {% endif %}
+<b>Livstegn Printmon:</b>
+<div id="last-printmon-update">
+</div>
 <hr>
 
     <form action="/order/" method="post">

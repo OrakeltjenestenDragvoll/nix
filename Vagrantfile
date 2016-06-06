@@ -36,7 +36,7 @@ Vagrant.configure('2') do |config|
             nix_config.vm.box_url = 'http://files.vagrantup.com/precise32.box'
             
             nix_config.vm.network :forwarded_port, guest: 8000, host: 8001
-            nix_config.vm.network :forwarded_port, guest: 80, host: 8080
+            nix_config.vm.network :forwarded_port, guest: 80, host: 8008
             nix_config.vm.network :forwarded_port, guest: 443, host: 8443
 
             nix_config.ssh.forward_agent = true
