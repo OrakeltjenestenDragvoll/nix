@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 <h1>Log-liste</h1>
+<a href="/printers/logs?type=all">Se alle</a> - <a href="/printers/logs?type=humans">Humans</a> - <a href="/printers/logs?type=printmon">Printmon</a>
   {% if logs %}
     {% for log in logs %}
         <div class="panel panel-default">

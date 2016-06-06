@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext, loader
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -60,7 +61,15 @@ def printskjerm(request):
 
 
 def logs(request):
-    logs = PaperLogEntry.objects.all()
+    printmon_user = User.objects.filter(username='printmon')
+    type = request.GET.get('type', '')
+
+    if type == 'humans':
+        logs = PaperLogEntry.objects.all().exclude(user=printmon_user)
+    elif type == 'printmon':
+        logs = PaperLogEntry.objects.filter(user=printmon_user)
+    else:
+        logs = PaperLogEntry.objects.all()
 
     paginator = Paginator(logs, 10)
     page = request.GET.get('page')
@@ -73,7 +82,6 @@ def logs(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         logs = paginator.page(paginator.num_pages)
-
 
     template = loader.get_template('printers/logs.html')
     context = RequestContext(request, {
