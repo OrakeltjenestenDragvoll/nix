@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.core.management.base import BaseCommand
-from apps.printers.models import Printer
+from django.contrib.auth.models import User
+from apps.printers.models import Printer, PaperLogEntry
 import urllib2
 import json
 
@@ -30,6 +31,9 @@ class Command(BaseCommand):
 
         for key, value in statuses.iteritems():
             update_printer(key, value, papercount[key])
+        log = PaperLogEntry()
+        log.user = User.objects.get(username='printmon')
+        log.save()
 
 
 def update_printer(name, status, lastread):
@@ -56,7 +60,7 @@ def update_printer(name, status, lastread):
 
 def byteify(data):
     if isinstance(data, dict):
-        return {byteify(key):byteify(value) for key,value in data.iteritems()}
+        return {byteify(key): byteify(value) for key, value in data.iteritems()}
     elif isinstance(data, list):
         return [byteify(element) for element in data]
     elif isinstance(data, unicode):
