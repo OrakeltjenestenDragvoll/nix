@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext, loader
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from apps.printers.models import Printer, PaperLogEntry
 from apps.posts.models import Post, Category
@@ -54,5 +55,28 @@ def printskjerm(request):
     context = RequestContext(request, {
         'printer_list': printer_list,
         'message_list': message_list
+    })
+    return HttpResponse(template.render(context))
+
+
+def logs(request):
+    logs = PaperLogEntry.objects.all()
+
+    paginator = Paginator(logs, 10)
+    page = request.GET.get('page')
+
+    try:
+        logs = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        logs = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        logs = paginator.page(paginator.num_pages)
+
+
+    template = loader.get_template('printers/logs.html')
+    context = RequestContext(request, {
+        'logs': logs,
     })
     return HttpResponse(template.render(context))

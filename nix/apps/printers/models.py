@@ -22,3 +22,6 @@ class PaperLogEntry(models.Model):
 
     def __unicode__(self):
         return unicode(self.user) + ':' + unicode(self.date)
+
+    class Meta:
+        ordering = ['-date']

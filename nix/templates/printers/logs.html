@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Log-liste</h1>
+  {% if logs %}
+    {% for log in logs %}
+        <div class="panel panel-default">
+            <div class="panel-body">
+                {{log.date}} av {{log.user.first_name}}
+            </div>
+        <div class="panel-footer">
+        	test
+        </div>
+        </div>
+    {% endfor %}
+  <hr>
+  {% else %}
+    <p>Det finnes ingen logger.</p>
+  {% endif %}
+  {% if logs.paginator.num_pages > 1 %}
+                <div class="container-fluid text-center">
+                    {% if logs.has_previous %}
+                        <a href="?page={{ logs.previous_page_number }}">&lt;&lt;</a>
+                    {% else %}
+                        &lt;&lt;
+                    {% endif %}
+
+                    {{ logs.number }} av {{ logs.paginator.num_pages }}
+
+                    {% if logs.has_next %}
+                        <a href="?page={{ logs.next_page_number }}">>></a>
+                     {% else %}
+                        >>
+                    {% endif %}
+                </div>
+            {% endif %}
+{% endblock %}
