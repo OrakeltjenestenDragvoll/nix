@@ -2,6 +2,7 @@
 import datetime
 
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.mail import EmailMessage
 from django.shortcuts import render, redirect, get_object_or_404
@@ -20,7 +21,7 @@ def index(request):
     posts = Post.objects.all()
     printer_list = Printer.objects.order_by('-name')
     categories = Category.objects.all()
-    log = PaperLogEntry.objects.order_by('-date')[:1]
+    log = PaperLogEntry.objects.order_by('-date').exclude(user=User.objects.get(username='printmon'))[:1]
 
     paginator = Paginator(posts, 10)
     page = request.GET.get('page')
