@@ -1,9 +1,11 @@
 from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
+from django.utils import timezone
 from apps.printers.models import Printer, PaperLogEntry
 import urllib2
 import json
+from datetime import timedelta
 
 sheets_per_box = 2500.00
 
@@ -31,9 +33,12 @@ class Command(BaseCommand):
 
         for key, value in statuses.iteritems():
             update_printer(key, value, papercount[key])
-        log = PaperLogEntry()
-        log.user = User.objects.get(username='printmon')
-        log.save()
+
+        time_threshold = timezone.now()-timedelta(days=1)
+        if not PaperLogEntry.objects.filter(date__gte=time_threshold).exists():
+            log = PaperLogEntry()
+            log.user = User.objects.get(username='printmon')
+            log.save()
 
 
 def update_printer(name, status, lastread):
