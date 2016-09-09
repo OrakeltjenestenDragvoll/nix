@@ -7,6 +7,7 @@ PROJECT_SETTINGS_DIRECTORY = os.path.dirname(os.path.join(BASE_DIR, 'nix', 'sett
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = (
+    # Django apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -15,8 +16,11 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.flatpages',
     'django.contrib.sites',
+    # Nix apps
     'apps.posts',
     'apps.printers',
+    # Third party apps
+    'apps.feide',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -65,6 +69,7 @@ SITE_ID = 1
 
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/auth/login/'
+LOGOUT_URL = '/auth/logout/'
 
 # Remember to keep 'local' last, so it can override any setting.
 for settings_module in ['local']:  # local last
