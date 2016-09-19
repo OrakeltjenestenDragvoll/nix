@@ -1,5 +1,4 @@
 
-DEBUG = True
 TEMPLATE_DEBUG = True
 SECRET_KEY = 'override this in prod'
 

@@ -6,8 +6,6 @@ from django.views.decorators.csrf import csrf_exempt
 
 from onelogin.saml2.auth import OneLogin_Saml2_Auth
 
-from stronghold.decorators import public
-
 
 def init_saml_auth(req):
     auth = OneLogin_Saml2_Auth(req, custom_base_path=settings.SAML_FOLDER)
@@ -27,7 +25,6 @@ def prepare_django_request(request):
     return result
 
 
-@public
 @csrf_exempt
 def login(request):
     req = prepare_django_request(request)

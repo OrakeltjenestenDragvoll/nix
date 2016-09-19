@@ -34,6 +34,10 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
 )
 
+AUTHENTICATION_BACKENDS = (
+    'feide.backend.FeideBackend',
+    'django.contrib.auth.backends.ModelBackend')
+
 ROOT_URLCONF = 'nix.urls'
 
 WSGI_APPLICATION = 'nix.wsgi.application'
@@ -51,6 +55,7 @@ USE_L10N = True
 
 USE_TZ = True
 
+DEBUG = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
@@ -65,11 +70,19 @@ TEMPLATE_DIRS = [
     os.path.join(BASE_DIR, 'templates'),
 ]
 
+SAML_FOLDER = '/webapps/nix2/saml'
+
 SITE_ID = 1
 
 LOGIN_REDIRECT_URL = '/'
-LOGIN_URL = '/auth/login/'
-LOGOUT_URL = '/auth/logout/'
+# Use django auth
+if DEBUG:
+    LOGIN_URL = '/auth/login/'
+    LOGOUT_URL = '/auth/logout/'
+# Use feide auth
+else:
+    LOGIN_URL = '/login/'
+    LOGOUT_URL = '/logout/'
 
 # Remember to keep 'local' last, so it can override any setting.
 for settings_module in ['local']:  # local last
