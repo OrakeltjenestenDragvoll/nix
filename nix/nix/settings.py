@@ -4,7 +4,7 @@ import sys
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 PROJECT_SETTINGS_DIRECTORY = os.path.dirname(os.path.join(BASE_DIR, 'nix', 'settings'))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = (
     # Django apps
@@ -35,7 +35,7 @@ MIDDLEWARE_CLASSES = (
 )
 
 AUTHENTICATION_BACKENDS = (
-    'feide.backend.FeideBackend',
+    'apps.feide.backend.FeideBackend',
     'django.contrib.auth.backends.ModelBackend')
 
 ROOT_URLCONF = 'nix.urls'
@@ -71,18 +71,19 @@ TEMPLATE_DIRS = [
 ]
 
 SAML_FOLDER = '/webapps/nix2/saml'
+SAML_EMPLOYEE_STRING = 'ou=OI-ITAVD-ORAKEL,ou=OI-ITAVD,ou=OI,ou=RE,ou=organization,dc=ntnu,dc=no'
 
 SITE_ID = 1
 
 LOGIN_REDIRECT_URL = '/'
 # Use django auth
-if DEBUG:
-    LOGIN_URL = '/auth/login/'
-    LOGOUT_URL = '/auth/logout/'
+#if DEBUG:
+#    LOGIN_URL = '/auth/login/'
+#    LOGOUT_URL = '/auth/logout/'
 # Use feide auth
-else:
-    LOGIN_URL = '/login/'
-    LOGOUT_URL = '/logout/'
+#else:
+LOGIN_URL = '/login/'
+LOGOUT_URL = '/logout/'
 
 # Remember to keep 'local' last, so it can override any setting.
 for settings_module in ['local']:  # local last

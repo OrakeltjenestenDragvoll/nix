@@ -54,7 +54,7 @@ def login(request):
 
         if settings.DEBUG:
             str_errors = ",".join(errors)
-            return HttpResponse(str_errors, content_type="text/plain")
+            return HttpResponse(str_errors + ': ' + auth.get_last_error_reason(), content_type="text/plain")
         else:
             return HttpResponse("An error occured. Could not login!", content_type="text/plain")
 

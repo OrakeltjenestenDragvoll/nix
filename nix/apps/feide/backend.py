@@ -1,4 +1,6 @@
 from django.contrib.auth.models import User
+from django.conf import settings
+import uuid
 
 
 class FeideBackend(object):
@@ -13,7 +15,13 @@ class FeideBackend(object):
                 user = User.objects.get(username=username)
                 return user
             except User.DoesNotExist:
-                return None
+                if not any(settings.SAML_EMPLOYEE_STRING in x for x in samlUserdata['eduPersonOrgUnitDN']):
+                    return None
+                else:
+                    user = User.objects.create_user(username, username + '@stud.ntnu.no', uuid.uuid4())
+                    user.first_name = samlUserdata['displayName'][0]
+                    user.save()
+                    return user
         except KeyError:
             return None
 
