@@ -47,7 +47,7 @@ WSGI_APPLICATION = 'nix.wsgi.application'
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Oslo'
 
 USE_I18N = True
 
@@ -77,13 +77,13 @@ SITE_ID = 1
 
 LOGIN_REDIRECT_URL = '/'
 # Use django auth
-#if DEBUG:
-#    LOGIN_URL = '/auth/login/'
-#    LOGOUT_URL = '/auth/logout/'
+if DEBUG:
+    LOGIN_URL = '/auth/login/'
+    LOGOUT_URL = '/auth/logout/'
 # Use feide auth
-#else:
-LOGIN_URL = '/login/'
-LOGOUT_URL = '/logout/'
+else:
+    LOGIN_URL = '/login/'
+    LOGOUT_URL = '/logout/'
 
 # Remember to keep 'local' last, so it can override any setting.
 for settings_module in ['local']:  # local last
