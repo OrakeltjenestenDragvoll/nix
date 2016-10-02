@@ -16,7 +16,8 @@ class FeideBackend(object):
                     return None
                 else:
                     user = User.objects.create_user(username, username + '@stud.ntnu.no', uuid.uuid4())
-                    user.first_name = saml_user_data['displayName'][0]
+                    user.first_name = saml_user_data['givenName'][0]
+                    user.last_name = saml_user_data['sn'][0]
                     user.save()
                     return user
         except KeyError:
