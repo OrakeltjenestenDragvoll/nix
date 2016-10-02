@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import authenticate
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden, HttpResponseServerError
+from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 
 from onelogin.saml2.auth import OneLogin_Saml2_Auth
@@ -50,13 +50,13 @@ def login(request):
                 auth_login(request, user)
                 return HttpResponseRedirect("/")
 
-            return HttpResponseForbidden(str("Access denied!"), content_type="text/plain")
+            return HttpResponse(str("Access denied!"), content_type="text/plain")
 
         if settings.DEBUG:
             str_errors = ",".join(errors)
-            return HttpResponseServerError(str_errors + ': ' + auth.get_last_error_reason(), content_type="text/plain")
+            return HttpResponse(str_errors + ': ' + auth.get_last_error_reason(), content_type="text/plain")
         else:
-            return HttpResponseServerError("An error occured. Could not login!", content_type="text/plain")
+            return HttpResponse("An error occured. Could not login!", content_type="text/plain")
 
 
 def logout(request):
