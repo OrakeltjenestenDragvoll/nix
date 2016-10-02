@@ -12,7 +12,7 @@ class FeideBackend(object):
                 user = User.objects.get(username=username)
                 return user
             except User.DoesNotExist:
-                if not any(settings.SAML_EMPLOYEE_STRING in x for x in saml_user_data['eduPersonOrgUnitDN']):
+                if not any(settings.SAML_EMPLOYEE_STRING in x for x in saml_user_data['eduPersonPrimaryOrgUnitDN']):
                     return None
                 else:
                     user = User.objects.create_user(username, username + '@stud.ntnu.no', uuid.uuid4())
