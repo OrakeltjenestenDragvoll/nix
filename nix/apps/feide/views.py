@@ -40,23 +40,22 @@ def login(request):
         auth.process_response()
         errors = auth.get_errors()
 
-        if not errors:
-            request.session['samlUserdata'] = auth.get_attributes()
-            request.session['samlNameId'] = auth.get_nameid()
-            request.session['samlSessionIndex'] = auth.get_session_index()
-            user = authenticate(saml_user_data=auth.get_attributes())
-
-            if user is not None:
-                auth_login(request, user)
-                return HttpResponseRedirect("/")
-
-            return HttpResponseForbidden(str("Access denied!"), content_type="text/plain")
-
-        if settings.DEBUG:
+        if errors and settings.DEBUG:
             str_errors = ",".join(errors)
             return HttpResponseServerError(str_errors + ': ' + auth.get_last_error_reason(), content_type="text/plain")
-        else:
+        elif errors and not settings.DEBUG:
             return HttpResponseServerError("An error occured. Could not login!", content_type="text/plain")
+
+        request.session['samlUserdata'] = auth.get_attributes()
+        request.session['samlNameId'] = auth.get_nameid()
+        request.session['samlSessionIndex'] = auth.get_session_index()
+        user = authenticate(saml_user_data=auth.get_attributes())
+
+        if user is None:
+            return HttpResponseForbidden(str("Access denied!"), content_type="text/plain")
+
+        auth_login(request, user)
+        return HttpResponseRedirect("/")
 
 
 def logout(request):
