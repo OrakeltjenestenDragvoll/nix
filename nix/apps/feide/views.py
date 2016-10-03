@@ -44,7 +44,7 @@ def login(request):
             request.session['samlUserdata'] = auth.get_attributes()
             request.session['samlNameId'] = auth.get_nameid()
             request.session['samlSessionIndex'] = auth.get_session_index()
-            user = authenticate(samlUserdata=auth.get_attributes())
+            user = authenticate(saml_user_data=auth.get_attributes())
 
             if user is not None:
                 auth_login(request, user)
