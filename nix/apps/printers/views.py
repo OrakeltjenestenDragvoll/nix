@@ -48,18 +48,6 @@ def printmon(request):
     return HttpResponse(template.render(context))
 
 
-def printskjerm(request):
-    printer_list = Printer.objects.order_by('-name')
-    cat = Category.objects.filter(category_description='Infoskjerm')
-    message_list = Post.objects.order_by('published').filter(category=cat).reverse()[:2]
-    template = loader.get_template('printers/printskjerm.html')
-    context = RequestContext(request, {
-        'printer_list': printer_list,
-        'message_list': message_list
-    })
-    return HttpResponse(template.render(context))
-
-
 def logs(request):
     printmon_user = User.objects.filter(username='printmon')
     type = request.GET.get('type', '')
