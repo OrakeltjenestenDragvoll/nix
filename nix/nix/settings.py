@@ -38,6 +38,8 @@ AUTHENTICATION_BACKENDS = (
     'apps.feide.backend.FeideBackend',
     'django.contrib.auth.backends.ModelBackend')
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
 ROOT_URLCONF = 'nix.urls'
 
 WSGI_APPLICATION = 'nix.wsgi.application'
@@ -76,11 +78,12 @@ SAML_EMPLOYEE_STRING = 'ou=OI-ITAVD-ORAKEL,ou=OI-ITAVD,ou=OI,ou=RE,ou=organizati
 SITE_ID = 1
 
 LOGIN_REDIRECT_URL = '/'
-# Use django auth
+# Dev-settings
 if DEBUG:
     LOGIN_URL = '/auth/login/'
     LOGOUT_URL = '/auth/logout/'
-# Use feide auth
+
+# Prod-settings
 else:
     LOGIN_URL = '/login/'
     LOGOUT_URL = '/logout/'

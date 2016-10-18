@@ -11,11 +11,8 @@ DATABASES = {
 
 PRINTMON_URL = 'http://nix.svt.ntnu.no:8080'
 
+EMAIL_ADDRESS_SENDER = 'example@example.com'
 ORDER_TARGET_EMAIL = 'example@example.com'
 ORDER_COPY_EMAIL = 'example@example.com'
 
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'gmail'
-EMAIL_HOST_PASSWORD = 'password'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.stud.ntnu.no'

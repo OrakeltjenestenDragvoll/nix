@@ -104,8 +104,13 @@ def confirm_order(request):
                   "Kontaktinfo som transportøren kan ringe: Orakeltjenesten Dragvoll, tlf. 735 91810, \n\n" \
                   "Prosjektnummer.: 09115000 K-sted: 167325"\
                   "\nDenne epost-adressen brukes bare til sending av bestillinger. Kontakt dragvollorakel@ntnu.no ved spørsmål"
-        headers = {'Reply-To': "dragvollorakel@ntnu.no"}
-        email = EmailMessage(subject, content, to=[settings.ORDER_TARGET_EMAIL, settings.ORDER_COPY_EMAIL], headers=headers)
+        headers = {'Reply-To': settings.EMAIL_ADDRESS_SENDER}
+        email = EmailMessage(
+            subject,
+            content,
+            settings.EMAIL_ADDRESS_SENDER,
+            to=[settings.ORDER_TARGET_EMAIL, settings.ORDER_COPY_EMAIL],
+            headers=headers)
         email.send()
         now = datetime.datetime.now()
         category = Category.objects.get(category_description='Info')
