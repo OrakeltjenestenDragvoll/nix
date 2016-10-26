@@ -24,9 +24,9 @@
         </td>
     </tr>
     <script>
-        if({{printer.paper_remaining|paper_to_boxes}} >= {{printer.full_threshold}})
+        if({{printer.paper_remaining|paper_to_boxes}} > {{printer.medium_threshold}})
             document.getElementById("paper.{{printer.name}}").style.color = "#009933";
-        if({{printer.paper_remaining|paper_to_boxes}} < {{printer.full_threshold}})
+        if({{printer.paper_remaining|paper_to_boxes}} <= {{printer.medium_threshold}})
             document.getElementById("paper.{{printer.name}}").style.color = "#FF9900";
         if({{printer.paper_remaining|paper_to_boxes}} <= {{printer.low_threshold}})
             document.getElementById("paper.{{printer.name}}").style.color = "#ff0000";

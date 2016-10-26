@@ -8,7 +8,6 @@ class Printer(models.Model):
     last_read = models.IntegerField(blank=True)
     low_threshold = models.IntegerField(blank=True)
     medium_threshold = models.IntegerField(blank=True)
-    full_threshold = models.IntegerField(blank=True)
     status = models.CharField(blank=True, max_length=50)
 
     def __unicode__(self):
