@@ -18,21 +18,14 @@ class Command(BaseCommand):
         statuses = {}
         papercount = {}
 
-        for i in range(0, len(printer_list)):
-            for y in range(0, len(data)):
-                if data[y]['name'] == printer_list[i].name:
-                    if i <= y:
-                        statuses[data[i]['name']] = data[i]['status']
-                        papercount[data[i]['name']] = data[i]['paperCounter']
-
-        print 'JSON length: ' + str(len(data))
-        print 'DB length: ' + str(len(printer_list))
-        for key in statuses:
-            print key + ' : ' + statuses[key]
-            print key + ' : ' + str(papercount[key])
+        for printer in data:
+            statuses[printer['name']] = printer['status']
+            papercount[printer['name']] = printer['paperCounter']
 
         for key, value in statuses.iteritems():
-            update_printer(key, value, papercount[key])
+            for printer in printer_list:
+                if key == printer.name:
+                    update_printer(key, value, papercount[key])
 
         time_threshold = timezone.now()-timedelta(days=1)
         if not PaperLogEntry.objects.filter(date__gte=time_threshold).exists():
