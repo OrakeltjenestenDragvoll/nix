@@ -77,6 +77,8 @@ SAML_EMPLOYEE_STRING = 'ou=OI-ITAVD-ORAKEL,ou=OI-ITAVD,ou=OI,ou=RE,ou=organizati
 
 SITE_ID = 1
 
+SHEETS_PER_PAPER_BOX = 2500.00
+
 LOGIN_REDIRECT_URL = '/'
 # Dev-settings
 if DEBUG:

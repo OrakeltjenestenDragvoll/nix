@@ -3,14 +3,13 @@ from django.contrib.auth.models import User
 
 
 class Printer(models.Model):
-    name = models.CharField(max_length=10)
-    paper_text = models.TextField()
-    paper_remaining = models.BigIntegerField()
-    last_read = models.BigIntegerField()
-    low_threshold = models.BigIntegerField()
-    medium_threshold = models.BigIntegerField()
-    full_threshold = models.BigIntegerField()
-    status = models.TextField()
+    name = models.CharField(max_length=20)
+    paper_remaining = models.IntegerField(blank=True)
+    last_read = models.IntegerField(blank=True)
+    low_threshold = models.IntegerField(blank=True)
+    medium_threshold = models.IntegerField(blank=True)
+    full_threshold = models.IntegerField(blank=True)
+    status = models.CharField(blank=True, max_length=50)
 
     def __unicode__(self):
         return self.name
