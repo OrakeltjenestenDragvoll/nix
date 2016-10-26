@@ -38,7 +38,6 @@ def update_printer(name, status, lastread):
             printer = Printer.objects.get(name=name)
             difference = lastread - printer.last_read
             printer.paper_remaining = printer.paper_remaining - difference
-            printer.paper_text = unicode(round(printer.paper_remaining/sheets_per_box, 2))
             printer.status = status
             printer.last_read = lastread
             printer.save()
@@ -46,13 +45,11 @@ def update_printer(name, status, lastread):
             if printer.name == '10.3v':
                 aux_printer = Printer.objects.get(name='10.3h')
                 aux_printer.paper_remaining = printer.paper_remaining - difference
-                aux_printer.paper_text = unicode(round(printer.paper_remaining/sheets_per_box, 2))
                 aux_printer.save()
 
             if printer.name == '10.3h':
                 aux_printer = Printer.objects.get(name='10.3v')
                 aux_printer.paper_remaining = aux_printer.paper_remaining - difference
-                aux_printer.paper_text = unicode(round(aux_printer.paper_remaining/sheets_per_box, 2))
                 aux_printer.save()
 
 

@@ -1,4 +1,5 @@
 {% block content %}
+    {% load printer_tags %}
 {% if printer_list %}
 <table class="table">
     <thead>
@@ -15,7 +16,7 @@
     {% for printer in printer_list %}
     <tr>
         <td>{{printer.name}}</td>
-        <td><b><div id="paper.{{printer.name}}">{{printer.paper_text}}</div></b></td>
+        <td><b><div id="paper.{{printer.name}}">{{printer.paper_remaining|paper_to_boxes}}</div></b></td>
         <td>
             <div class="printer-{{printer.name}}">
                 <input id="{{printer.name}}" type="text" name="{{printer.name}}" autocomplete="off" class="form-control" value="0">
@@ -23,11 +24,11 @@
         </td>
     </tr>
     <script>
-        if({{printer.paper_text}} >= {{printer.full_threshold}})
+        if({{printer.paper_remaining|paper_to_boxes}} >= {{printer.full_threshold}})
             document.getElementById("paper.{{printer.name}}").style.color = "#009933";
-        if({{printer.paper_text}} < {{printer.full_threshold}})
+        if({{printer.paper_remaining|paper_to_boxes}} < {{printer.full_threshold}})
             document.getElementById("paper.{{printer.name}}").style.color = "#FF9900";
-        if({{printer.paper_text}} <= {{printer.low_threshold}})
+        if({{printer.paper_remaining|paper_to_boxes}} <= {{printer.low_threshold}})
             document.getElementById("paper.{{printer.name}}").style.color = "#ff0000";
     </script>
     {% endfor %}
