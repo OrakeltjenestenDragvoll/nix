@@ -4,11 +4,11 @@ from django.contrib.auth.models import User
 
 class Printer(models.Model):
     name = models.CharField(max_length=20)
-    paper_remaining = models.IntegerField(blank=True)
-    last_read = models.IntegerField(blank=True)
-    low_threshold = models.IntegerField(blank=True)
-    medium_threshold = models.IntegerField(blank=True)
-    status = models.CharField(blank=True, max_length=50)
+    paper_remaining = models.IntegerField(blank=True, null=True)
+    last_read = models.IntegerField(blank=True, null=True)
+    low_threshold = models.IntegerField(blank=True, null=True)
+    medium_threshold = models.IntegerField(blank=True, null=True)
+    status = models.CharField(blank=True, null=True, max_length=50)
 
     def __unicode__(self):
         return self.name
