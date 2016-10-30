@@ -6,7 +6,7 @@ function getPrintmonStatus()
             document.getElementById("last-printmon-update").innerHTML = xmlHttp.responseText;;
         }
     }
-    xmlHttp.open("GET", 'http://nix.svt.ntnu.no:8080/last_update', true); // true for asynchronous 
+    xmlHttp.open("GET", 'https://nix.orakel.ntnu.no/last_update', true); // true for asynchronous
     xmlHttp.send(null);
 }
 
