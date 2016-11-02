@@ -13,7 +13,7 @@ sheets_per_box = 2500.00
 class Command(BaseCommand):
     def handle(self, *args, **options):
         printer_list = list(Printer.objects.all())
-        data = json.load(urllib2.urlopen(settings.PRINTMON_URL + '/index'))
+        data = json.load(urllib2.urlopen(settings.PRINTMON_URL))
         data = byteify(data)
         statuses = {}
         papercount = {}
