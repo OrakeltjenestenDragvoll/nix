@@ -102,15 +102,12 @@ def confirm_order(request):
         content = "Hei!\n\nØnsker å bestille " + str(num_of_pallets) + " pall (" + str(num_of_boxes) + " kasser) A4-papir.\n\n" \
                   "Mottaker er Orakeltjenesten Dragvoll, bygg 8, nivå 5. Leveringssted er ved heis 7, nivå 2 (mellom bygg 6 og 8), NTNU Dragvoll, Edvard Bulls veg 1\n\n" \
                   "Kontaktinfo som transportøren kan ringe: Orakeltjenesten Dragvoll, tlf. 735 91810, \n\n" \
-                  "Prosjektnummer.: 09115000 K-sted: 167325"\
-                  "\nDenne epost-adressen brukes bare til sending av bestillinger. Kontakt dragvollorakel@ntnu.no ved spørsmål"
-        headers = {'Reply-To': settings.EMAIL_ADDRESS_SENDER}
+                  "Prosjektnummer.: 09115000 K-sted: 167325"
         email = EmailMessage(
             subject,
             content,
             settings.EMAIL_ADDRESS_SENDER,
-            to=[settings.ORDER_TARGET_EMAIL, settings.ORDER_COPY_EMAIL],
-            headers=headers)
+            to=[settings.ORDER_TARGET_EMAIL, settings.ORDER_COPY_EMAIL])
         email.send()
         now = datetime.datetime.now()
         category = Category.objects.get(category_description='Info')
@@ -121,9 +118,9 @@ def confirm_order(request):
             category=category,
         )
         if num_of_pallets == 1:
-            post.content='En papirpalle er bestilt til nivå 2'
+            post.content = 'En papirpalle er bestilt til nivå 2'
         if num_of_pallets == 2:
-            post.content='To papirpaller er bestilt til nivå 2'
+            post.content = 'To papirpaller er bestilt til nivå 2'
         post.save()
         return HttpResponseRedirect('/')
     else:
