@@ -36,9 +36,13 @@ class Command(BaseCommand):
 
 def update_printer(name, status, lastread):
             printer = Printer.objects.get(name=name)
+            printer.status = status
+            # Avoid Printmon default value of -1
+            if int(lastread) == -1:
+                printer.save()
+                return
             difference = lastread - printer.last_read
             printer.paper_remaining = printer.paper_remaining - difference
-            printer.status = status
             printer.last_read = lastread
             printer.save()
 

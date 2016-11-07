@@ -1,5 +1,5 @@
+{% load printer_tags %}
 {% block content %}
-    {% load printer_tags %}
 {% if printer_list %}
 <table class="table">
     <thead>
@@ -47,7 +47,7 @@
 {{last_log.date}} av {{last_log.user.first_name}}<br>
 <a href="/printers/logs?type=humans">Se alle</a><br><br>
 {% endif %}
-<b>Livstegn Printmon:</b>
+<b>Livstegn <a href="{% get_printmon_url %}">Printmon</a>:</b>
 <div id="last-printmon-update">
 </div>
 <hr>
