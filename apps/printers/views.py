@@ -5,7 +5,6 @@ from django.template import RequestContext, loader
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from apps.printers.models import Printer, PaperLogEntry
-from apps.posts.models import Post, Category
 
 
 @login_required()

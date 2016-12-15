@@ -6,22 +6,27 @@ from django.contrib.auth.models import User
 
 
 class LoginForm(forms.Form):
-    username = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control', 
-        'placeholder': u'Username', 'type': 'text'}), label=u"Username", max_length=50)
-    password = forms.CharField(widget=forms.PasswordInput(render_value=False, attrs={'class':'form-control', 
-        'placeholder': u'Password', 'type': 'password'}), label=u"Password")
+    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
+                                                             'placeholder': u'Username',
+                                                             'type': 'text'}),
+                               label=u"Username", max_length=50)
+    password = forms.CharField(widget=forms.PasswordInput(render_value=False, attrs={'class': 'form-control',
+                                                                                     'placeholder': u'Password',
+                                                                                     'type': 'password'}),
+                               label=u"Password")
     user = None
 
     def clean(self):
         if self._errors:
             return
-    
+
         user = auth.authenticate(username=self.cleaned_data['username'], password=self.cleaned_data['password'])
 
         if user:
             self.user = user
         else:
-            self._errors['username'] = self.error_class([u"The account does not exist, or username/password combination is incorrect."])
+            self._errors['username'] = self.error_class(
+                [u"The account does not exist, or username/password combination is incorrect."])
         return self.cleaned_data
 
     def login(self, request):
