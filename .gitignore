@@ -1,4 +1,4 @@
-# Byte-compiled / optimized / DLL files
+d# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *.pyc
@@ -43,3 +43,8 @@ local.py
 *.vagrant
 
 static/
+/local/
+/pip-selfcheck.json
+/include/
+/bin/
+/share/

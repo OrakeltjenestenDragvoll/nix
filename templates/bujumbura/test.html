@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+    {% if list %}
+        <div class="container">
+			{% for foo in added %}
+                <div>{{ foo.key }}</div>
+			{% endfor %}
+		</div>
+    {% else %}
+        <div>nothing posted</div>
+    {% endif %}
+
+{% endblock %}

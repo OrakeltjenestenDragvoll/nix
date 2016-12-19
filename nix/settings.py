@@ -19,6 +19,7 @@ INSTALLED_APPS = (
     # Nix apps
     'apps.posts',
     'apps.printers',
+    'apps.bujumbura',
     # Third party apps
     'apps.feide',
 )
@@ -33,6 +34,22 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
 )
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
 
 AUTHENTICATION_BACKENDS = (
     'apps.feide.backend.FeideBackend',
@@ -61,16 +78,18 @@ DEBUG = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
-STATIC_ROOT = 'static/'
-STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATIC_URL = '/files/'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'files'),
+    os.path.join(BASE_DIR, "files"),
 ]
 
-TEMPLATE_DIRS = [
-    os.path.join(BASE_DIR, 'templates'),
-]
+STATICFILES_FINDERS = (
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+)
+
 
 SAML_FOLDER = '/webapps/nix2/saml'
 SAML_EMPLOYEE_STRING = 'ou=OI-ITAVD-ORAKEL,ou=OI-ITAVD,ou=OI,ou=RE,ou=organization,dc=ntnu,dc=no'
@@ -101,5 +120,5 @@ for settings_module in ['local']:  # local last
         sys.exit(1)
     try:
         exec('from %s import *' % settings_module)
-    except ImportError, e:
-        print "Could not import settings for '%s' : %s" % (settings_module, str(e))
+    except ImportError as e:
+        print("Could not import settings for '%s' : %s" )% (settings_module, str(e))

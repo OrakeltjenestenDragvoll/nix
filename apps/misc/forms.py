@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from django.forms.util import ErrorList
+from django.forms.utils import ErrorList
 from django.utils.safestring import mark_safe
 
 
