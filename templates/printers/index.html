@@ -1,3 +1,4 @@
+{% load printer_tags %}
 {% block content %}
 {% if printer_list %}
 <table class="table">
@@ -15,7 +16,7 @@
     {% for printer in printer_list %}
     <tr>
         <td>{{printer.name}}</td>
-        <td><b><div id="paper.{{printer.name}}">{{printer.paper_text}}</div></b></td>
+        <td><b><div id="paper.{{printer.name}}">{{printer.paper_remaining|paper_to_boxes}}</div></b></td>
         <td>
             <div class="printer-{{printer.name}}">
                 <input id="{{printer.name}}" type="text" name="{{printer.name}}" autocomplete="off" class="form-control" value="0">
@@ -23,11 +24,11 @@
         </td>
     </tr>
     <script>
-        if({{printer.paper_text}} >= {{printer.full_threshold}})
+        if({{printer.paper_remaining|paper_to_boxes}} > {{printer.medium_threshold}})
             document.getElementById("paper.{{printer.name}}").style.color = "#009933";
-        if({{printer.paper_text}} < {{printer.full_threshold}})
+        if({{printer.paper_remaining|paper_to_boxes}} <= {{printer.medium_threshold}})
             document.getElementById("paper.{{printer.name}}").style.color = "#FF9900";
-        if({{printer.paper_text}} <= {{printer.low_threshold}})
+        if({{printer.paper_remaining|paper_to_boxes}} <= {{printer.low_threshold}})
             document.getElementById("paper.{{printer.name}}").style.color = "#ff0000";
     </script>
     {% endfor %}
@@ -46,7 +47,7 @@
 {{last_log.date}} av {{last_log.user.first_name}}<br>
 <a href="/printers/logs?type=humans">Se alle</a><br><br>
 {% endif %}
-<b>Livstegn Printmon:</b>
+<b>Livstegn <a href="{% get_printmon_url %}">Printmon</a>:</b>
 <div id="last-printmon-update">
 </div>
 <hr>

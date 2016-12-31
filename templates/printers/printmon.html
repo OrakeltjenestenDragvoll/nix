@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+    {% load printer_tags %}
 {% if printer_list %}
 <head>
 </head>
@@ -20,7 +21,7 @@
     <tr>
         <td>{{printer.name}}</td>
         <td><div id="status.{{printer.name}}">{{printer.status}}</div></td>
-        <td>{{printer.paper_text}}</td>
+        <td>{{ printer.paper_remaining|paper_to_boxes }}</td>
     </tr>
     {% endfor %}
 

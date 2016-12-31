@@ -13,7 +13,7 @@ sheets_per_box = 2500.00
 class Command(BaseCommand):
     def handle(self, *args, **options):
         printer_list = list(Printer.objects.all())
-        data = json.load(urllib2.urlopen(settings.PRINTMON_URL + '/index'))
+        data = json.load(urllib2.urlopen(settings.PRINTMON_URL))
         data = byteify(data)
         statuses = {}
         papercount = {}
@@ -36,23 +36,24 @@ class Command(BaseCommand):
 
 def update_printer(name, status, lastread):
             printer = Printer.objects.get(name=name)
+            printer.status = status
+            # Avoid Printmon default value of -1
+            if int(lastread) == -1:
+                printer.save()
+                return
             difference = lastread - printer.last_read
             printer.paper_remaining = printer.paper_remaining - difference
-            printer.paper_text = unicode(round(printer.paper_remaining/sheets_per_box, 2))
-            printer.status = status
             printer.last_read = lastread
             printer.save()
 
             if printer.name == '10.3v':
                 aux_printer = Printer.objects.get(name='10.3h')
                 aux_printer.paper_remaining = printer.paper_remaining - difference
-                aux_printer.paper_text = unicode(round(printer.paper_remaining/sheets_per_box, 2))
                 aux_printer.save()
 
             if printer.name == '10.3h':
                 aux_printer = Printer.objects.get(name='10.3v')
                 aux_printer.paper_remaining = aux_printer.paper_remaining - difference
-                aux_printer.paper_text = unicode(round(aux_printer.paper_remaining/sheets_per_box, 2))
                 aux_printer.save()
 
 
