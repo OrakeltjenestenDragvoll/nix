@@ -8,6 +8,7 @@ urlpatterns = [
     url(r'^weekday/$', views.weekday, name='bujumbura-weekday'),
     url(r'^api/report/$', views.report, name='bujumbura-report'),
     url(r'^keys/$', views.get_key, name='bujumbura-key'),
+    url(r'^get_hits_last_month/$', views.get_last_monthly, name='get_last_monthly'),
 
 
 ]

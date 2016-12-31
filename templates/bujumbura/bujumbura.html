@@ -12,5 +12,11 @@
 					<li><a href="{% url 'bujumbura-weekday' %}">Treff per ukedag</a></li>
 				</ul>
 			</div>
+            {%  block bujumbura %}
+            {%  endblock bujumbura %}
 		</div>
+{% endblock %}
+{% block scripts %}
+    {% block bujumbura_scripts %}
+    {% endblock %}
 {% endblock %}
