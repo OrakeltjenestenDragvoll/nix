@@ -11,23 +11,16 @@ import datetime
 
 from .models import apiKeys, ButtonTable
 
-
-@login_required()
-def index(request):
-    context = {
-    }
-    return render(request, 'bujumbura/bujumbura.html', context)
-
-
 @login_required()
 def hits_pr_day(request):
-    return render(request, 'bujumbura/hitsaday.html', {})
+    context = {
+    }
+    return render(request, 'bujumbura/hitsaday.html', context)
 
 
 @login_required()
 def hits_pr_day_stacked(request):
     context = {
-
     }
     return render(request, 'bujumbura/hitsadaystacked.html', context)
 
@@ -35,7 +28,6 @@ def hits_pr_day_stacked(request):
 @login_required()
 def weekday(request):
     context = {
-
     }
     return render(request, 'bujumbura/weekday.html', context)
 
@@ -64,18 +56,6 @@ def report(request):
                 context = {
                     'added': inputlist
                 }
-    return render(request, 'bujumbura/test.html', context)
-
-
-@login_required()
-def get_key(request):
-    qs = apiKeys.objects.all()
-    stringset = []
-    for item in qs:
-        stringset.append(str(item))
-    context = {
-        'list': stringset
-    }
     return render(request, 'bujumbura/test.html', context)
 
 

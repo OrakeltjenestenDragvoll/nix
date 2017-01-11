@@ -21,7 +21,7 @@ class ButtonTable(models.Model):
     )
     sender = models.ForeignKey(apiKeys, editable=False, null=False)
     button = models.IntegerField(choices=BUTTON_CHOICES, default=0)
-    date_registered = models.DateTimeField(auto_now_add=True, auto_now=False, )
+    date_registered = models.DateTimeField(auto_now_add=True, auto_now=False)
 
     def __unicode__(self):
         return str(self.button)
