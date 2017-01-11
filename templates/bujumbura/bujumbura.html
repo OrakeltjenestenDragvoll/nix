@@ -5,12 +5,10 @@
 				<h1> Bujumbura</h1>
 				<h2> Knappesystemet til orakeltjensten dragvoll</h2>
 			</div>
-			<div class="span3">
-				<ul class="nav">
-					<li><a href="{% url 'bujumbura-hitsaday' %}">Treff per dag</a></li>
-					<li><a href="{% url 'bujumbura-hitsadaystacked' %}">Totalt antal treff per dag</a></li>
-					<li><a href="{% url 'bujumbura-weekday' %}">Treff per ukedag</a></li>
-				</ul>
+			<div class="span3 navbar">
+					<div class="col-md-offset-2 col-md-3"><a href="{% url 'bujumbura-hitsaday' %}">Treff per dag</a></div>
+					<div class="col-md-3"><a href="{% url 'bujumbura-hitsadaystacked' %}">Totalt antal treff per dag</a></div>
+					<div class="col-md-3"><a href="{% url 'bujumbura-weekday' %}">Treff per ukedag</a></div>
 			</div>
             {%  block bujumbura %}
             {%  endblock bujumbura %}

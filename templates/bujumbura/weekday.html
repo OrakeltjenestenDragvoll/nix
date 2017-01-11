@@ -1,10 +1,12 @@
-<html>
-<head>
+{%  extends 'bujumbura/bujumbura.html' %}
+{% block bujumbura %}
         <script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js'></script>
 
         <!-- this UL will be populated with the data from the php array -->
         <ul></ul>
-
+    <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+{% endblock %}
+{% block bujumbura_scripts %}
         <script type='text/javascript'>
 			$(document).ready(function() {
 				var chart;
@@ -18,7 +20,7 @@
 				// Build the data arrays
 				var browserData = [];
 				var versionsData = [];
-				
+
 				var options = {
 					chart: {
 						renderTo: 'container',
@@ -66,7 +68,7 @@
 					}]
 				};
 
-				$.getJSON('weekdayServe.php', function(data) {
+				$.getJSON('{% url 'get_weekday' %}', function(data) {
 					//var colors = Highcharts.getOptions().colors
 					/* data will hold the php array as a javascript object */
 					var i=0;
@@ -77,35 +79,30 @@
 							color:colors[i]
 							});
 						versionsData.push({
-							name:"NtnuIT",
+							name:"Skranke",
 							y:val.c,
 							color:colors[6]
 							});
 						versionsData.push({
-							name:"SVT IT og IT HF",
+							name:"Telefon",
 							y:val.b,
 							color:colors[7]
 							});
 						versionsData.push({
-							name:"Annet",
+							name:"Blackboard",
 							y:val.a,
 							color:colors[8]
 							});
 						i++;
 						//$('ul').append('<li id="' + key + '">' + val.day + ' ' + val.tot + ' ' + val.a + ' ' + val.b + ' ' + val.c + '</li>');
 					});
-					
+
 					chart = new Highcharts.Chart(options);
-				});				
+				});
 			});
         </script>
 
-</head>
-	<body>
 <script src="http://code.highcharts.com/highcharts.js"></script>
 <script src="http://code.highcharts.com/modules/exporting.js"></script>
 
-<div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
-
-	</body>
-</html>
+{% endblock %}

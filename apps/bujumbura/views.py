@@ -86,8 +86,8 @@ def get_last_monthly(request):
     for d in (timezone.now().date() - timezone.timedelta(days=x) for x in
               range(0, 30)):
         data.update({str(d):
-                       {'a': 0, 'b': 0, 'c': 0}
-                   })
+                         {'a': 0, 'b': 0, 'c': 0}
+                     })
 
     a_query = get_button_count(0, 30)
     for element in a_query:
@@ -102,8 +102,38 @@ def get_last_monthly(request):
     return HttpResponse(json.dumps(data, sort_keys=True), content_type='application/json')
 
 
+@login_required()
+def get_weekday(request):
+    name = ['Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lordag', 'Sondag']
+    data = {}
+    for d in range(0, 7):
+        data.update({str(d):
+                         {'day': name[d], 'tot': 0, 'a': 0, 'b': 0, 'c': 0}
+                     })
+    for x in range(0, 8):
+        total = 0
+        temp_weekday = get_weekday_count(x)
+        for element in temp_weekday:
+            if element['button'] == 0:
+                data.get(str(x)).update(a=element['count'])
+            elif element['button'] == 1:
+                data.get(str(x)).update(b=element['count'])
+            elif element['button'] == 2:
+                data.get(str(x)).update(c=element['count'])
+            total += element['count']
+        if total != 0:
+            data.get(str(x)).update(tot=total)
+
+    return HttpResponse(json.dumps(data, sort_keys=True), content_type='application/json')
+
+
 def get_button_count(button_id, days_back):
     return ButtonTable.objects.filter(button=button_id, date_registered__lte=timezone.now(),
                                       date_registered__gt=timezone.now() - timezone.timedelta(
-                                      days=days_back)).extra({'date': "date(date_registered)"}).values(
-                                      'date').annotate(button_count=Count('id'))
+                                          days=days_back)).extra({'date': "date(date_registered)"}).values(
+        'date').annotate(button_count=Count('id'))
+
+
+def get_weekday_count(weekday):
+    return ButtonTable.objects.filter(date_registered__week_day=weekday).values('button').annotate(
+        count=Count('button'))

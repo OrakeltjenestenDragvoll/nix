@@ -2,3 +2,4 @@ Django==1.7.1
 gunicorn
 python-saml
 psycopg2
+pytz
