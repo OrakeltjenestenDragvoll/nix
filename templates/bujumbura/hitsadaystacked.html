@@ -1,10 +1,12 @@
-<html>
-<head>
+{%  extends 'bujumbura/bujumbura.html' %}
+{% block bujumbura %}
         <script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js'></script>
 
         <!-- this UL will be populated with the data from the php array -->
         <ul></ul>
-
+    <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+{% endblock %}
+{% block bujumbura_scripts %}
         <script type='text/javascript'>
 			$(document).ready(function() {
 				var chart;
@@ -23,7 +25,9 @@
 			text: 'Saker per dag'
 		},
 		xAxis: {
-			categories: []
+			categories: [],
+            reversed: true
+
 		},
 		yAxis: {
 			min: 0,
@@ -70,33 +74,28 @@
 				};
 				
 					/* call the php that has the php array which is json_encoded */
-				$.getJSON('hitsADayServe.php', function(data) {
+				$.getJSON('{% url 'get_last_monthly' %}', function(data) {
 					/* data will hold the php array as a javascript object */
-					
+
 					$.each(data, function(key, val) {
-						options.xAxis.categories.push(val.day);
+						options.xAxis.categories.push(key);
 						//options.series.data.push(parseInt(val.a));
-						day.push(val.day);
+						day.push(key);
 						a.push(val.a);
 						b.push(val.b);
 						c.push(val.c);
 						//	$('ul').append('<li id="' + key + '">' + val.day + ' ' + val.a + ' ' + val.b + ' ' + val.c + '</li>');
 					});
-					options.series.push({name:"NtnuIT",data:c});
-					options.series.push({name:"SVT IT og IT HF",data:b});
-					options.series.push({name:"Annet",data:a});
-					
+					options.series.push({name:"Skranke",data:c});
+					options.series.push({name:"Telefon",data:b});
+					options.series.push({name:"Blackboard",data:a});
+
 					chart = new Highcharts.Chart(options);
 				});
 			});
         </script>
 
-</head>
-	<body>
 <script src="http://code.highcharts.com/highcharts.js"></script>
 <script src="http://code.highcharts.com/modules/exporting.js"></script>
 
-<div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
-
-	</body>
-</html>
+{% endblock %}

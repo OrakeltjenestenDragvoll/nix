@@ -27,5 +27,5 @@ class ButtonTable(models.Model):
         return str(self.button)
 
     class Meta:
-        verbose_name_plural = 'Buttons'
-        verbose_name = 'Button'
+        verbose_name_plural = 'Case registers'
+        verbose_name = 'Registered case'

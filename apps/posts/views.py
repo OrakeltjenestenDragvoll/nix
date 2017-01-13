@@ -40,14 +40,13 @@ def index(request):
     else:
         log = log[0]
 
-    template = loader.get_template('posts/index.html')
-    context = RequestContext(request, {
+    context = {
         'posts': posts,
         'printer_list': printer_list,
         'categories': categories,
         'last_log': log,
-    })
-    return HttpResponse(template.render(context))
+    }
+    return render(request, 'posts/index.html', context)
 
 
 @login_required()

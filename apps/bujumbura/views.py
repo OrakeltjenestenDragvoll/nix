@@ -1,43 +1,35 @@
+import json
+
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect
-from django.core.mail import EmailMessage
-from django.shortcuts import render, redirect, get_object_or_404
-from django.template import RequestContext, loader
+from django.db.models import Count
+from django.http import HttpResponse
+from django.utils import timezone
+from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
+from nix import settings
+import datetime
 
 from .models import apiKeys, ButtonTable
 
-
-@login_required()
-def index(request):
-    template = loader.get_template('bujumbura/bujumbura.html')
-    context = RequestContext(request, {})
-
-    return HttpResponse(template.render(context))
-
-
 @login_required()
 def hits_pr_day(request):
-    template = loader.get_template('bujumbura/hitsaday.html')
-    context = RequestContext(request, {})
-
-    return HttpResponse(template.render(context))
+    context = {
+    }
+    return render(request, 'bujumbura/hitsaday.html', context)
 
 
 @login_required()
 def hits_pr_day_stacked(request):
-    template = loader.get_template('bujumbura/hitsadaystacked.html')
-    context = RequestContext(request, {})
-
-    return HttpResponse(template.render(context))
+    context = {
+    }
+    return render(request, 'bujumbura/hitsadaystacked.html', context)
 
 
 @login_required()
 def weekday(request):
-    template = loader.get_template('bujumbura/weekend.html')
-    context = RequestContext(request, {})
-
-    return HttpResponse(template.render(context))
+    context = {
+    }
+    return render(request, 'bujumbura/weekday.html', context)
 
 
 @csrf_exempt
@@ -67,12 +59,61 @@ def report(request):
     return render(request, 'bujumbura/test.html', context)
 
 
-def get_key(request):
-    qs = apiKeys.objects.all()
-    stringset = []
-    for item in qs:
-        stringset.append(str(item))
-    context = {
-        'list': stringset
+@login_required()
+def get_last_monthly(request):
+    data = {
     }
-    return render(request, 'bujumbura/test.html', context)
+    for d in (timezone.now().date() - timezone.timedelta(days=x) for x in
+              range(0, 30)):
+        data.update({str(d):
+                         {'a': 0, 'b': 0, 'c': 0}
+                     })
+
+    a_query = get_button_count(0, 30)
+    for element in a_query:
+        data.get(element['date']).update(a=element['button_count'])
+    b_query = get_button_count(1, 30)
+    for element in b_query:
+        data.get(element['date']).update(b=element['button_count'])
+    c_query = get_button_count(2, 30)
+    for element in c_query:
+        data.get(element['date']).update(c=element['button_count'])
+
+    return HttpResponse(json.dumps(data, sort_keys=True), content_type='application/json')
+
+
+@login_required()
+def get_weekday(request):
+    name = ['Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lordag', 'Sondag']
+    data = {}
+    for d in range(0, 7):
+        data.update({str(d):
+                         {'day': name[d], 'tot': 0, 'a': 0, 'b': 0, 'c': 0}
+                     })
+    for x in range(0, 8):
+        total = 0
+        temp_weekday = get_weekday_count(x)
+        for element in temp_weekday:
+            if element['button'] == 0:
+                data.get(str(x)).update(a=element['count'])
+            elif element['button'] == 1:
+                data.get(str(x)).update(b=element['count'])
+            elif element['button'] == 2:
+                data.get(str(x)).update(c=element['count'])
+            total += element['count']
+        if total != 0:
+            data.get(str(x)).update(tot=total)
+
+    return HttpResponse(json.dumps(data, sort_keys=True), content_type='application/json')
+
+
+def get_button_count(button_id, days_back):
+    return ButtonTable.objects.filter(button=button_id, date_registered__lte=timezone.now(),
+                                      date_registered__gt=timezone.now() - timezone.timedelta(
+                                          days=days_back)).extra({'date': "date(date_registered)"}).values(
+        'date').annotate(button_count=Count('id'))
+
+
+def get_weekday_count(weekday):
+    return ButtonTable.objects.filter(date_registered__week_day=weekday).values('button').annotate(
+        count=Count('button'))
