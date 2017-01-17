@@ -68,23 +68,33 @@ def get_last_monthly(request):
         data.update({str(d):
                          {'a': 0, 'b': 0, 'c': 0}
                      })
-
-    a_query = get_button_count(0, 30)
-    for element in a_query:
-        data.get(element['date']).update(a=element['button_count'])
-    b_query = get_button_count(1, 30)
-    for element in b_query:
-        data.get(element['date']).update(b=element['button_count'])
-    c_query = get_button_count(2, 30)
-    for element in c_query:
-        data.get(element['date']).update(c=element['button_count'])
+    if settings.DEBUG is False:
+        a_query = get_button_count(0, 30)
+        for element in a_query:
+            data.get(element['date'].isoformat()).update(a=element['button_count'])
+        b_query = get_button_count(1, 30)
+        for element in b_query:
+            data.get(element['date'].isoformat()).update(b=element['button_count'])
+        c_query = get_button_count(2, 30)
+        for element in c_query:
+            data.get(element['date'].isoformat()).update(c=element['button_count'])
+    else:
+        a_query = get_button_count(0, 30)
+        for element in a_query:
+            data.get(element['date']).update(a=element['button_count'])
+        b_query = get_button_count(1, 30)
+        for element in b_query:
+            data.get(element['date']).update(b=element['button_count'])
+        c_query = get_button_count(2, 30)
+        for element in c_query:
+            data.get(element['date']).update(c=element['button_count'])
 
     return HttpResponse(json.dumps(data, sort_keys=True), content_type='application/json')
 
 
 @login_required()
 def get_weekday(request):
-    name = ['Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lordag', 'Sondag']
+    name = ['Lordag', 'Sondag', 'Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag']
     data = {}
     for d in range(0, 7):
         data.update({str(d):
@@ -108,8 +118,8 @@ def get_weekday(request):
 
 
 def get_button_count(button_id, days_back):
-    return ButtonTable.objects.filter(button=button_id, date_registered__lte=timezone.now(),
-                                      date_registered__gt=timezone.now() - timezone.timedelta(
+    return ButtonTable.objects.filter(button=button_id, date_registered__date__lte=timezone.now(),
+                                      date_registered__date__gt=timezone.now() - timezone.timedelta(
                                           days=days_back)).extra({'date': "date(date_registered)"}).values(
         'date').annotate(button_count=Count('id'))
 
