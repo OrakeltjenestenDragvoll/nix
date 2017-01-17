@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-    {% if list %}
+    {% if list and settings.DEBUG %}
         <div class="container">
 			{% for foo in added %}
                 <div>{{ foo.key }}</div>
