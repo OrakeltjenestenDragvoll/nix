@@ -79,9 +79,9 @@
 						c.push(val.c);
 						//	$('ul').append('<li id="' + key + '">' + val.day + ' ' + val.a + ' ' + val.b + ' ' + val.c + '</li>');
 					});
-					options.series.push({name:"Skranke",data:c});
+                    options.series.push({name:"Blackboard",data:c});
 					options.series.push({name:"Telefon",data:b});
-					options.series.push({name:"Blackboard",data:a});
+					options.series.push({name:"Skranke",data:a});;
 
 					chart = new Highcharts.Chart(options);
 				});
