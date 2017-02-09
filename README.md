@@ -1,4 +1,4 @@
-nix2
+nix
 ====
 
-Nix 2.0 
+Nix
